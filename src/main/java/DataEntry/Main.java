@@ -18,7 +18,7 @@ public class Main extends Application{
 	public void start(Stage stage) throws Exception {
 
 
-		Parent root = FXMLLoader.load(getClass().getResource("VennFXML_Main.fxml"));														
+		Parent root = FXMLLoader.load(getClass().getResource("MainFXML.fxml"));														
 
 		stage.setTitle("DataEntry");
 
