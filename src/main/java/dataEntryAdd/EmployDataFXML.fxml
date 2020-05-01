@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Button?>
@@ -8,14 +14,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" prefHeight="593.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataEntryAdd.EmployDataController">
+<Pane fx:id="pane" focusTraversable="true" prefHeight="593.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataEntryAdd.EmployDataController">
    <children>
       <Text fontSmoothingType="LCD" layoutX="296.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Employ" wrappingWidth="179.6708984375">
          <font>
             <Font size="32.0" />
          </font>
       </Text>
-      <JFXTextField fx:id="name" labelFloat="true" layoutX="16.0" layoutY="67.0" prefHeight="31.0" prefWidth="195.0" promptText="Name" />
+      <JFXTextField fx:id="name" labelFloat="true" layoutX="16.0" layoutY="67.0" prefHeight="31.0" prefWidth="203.0" promptText="Name" />
       <JFXTextField fx:id="address" labelFloat="true" layoutX="16.0" layoutY="126.0" prefHeight="31.0" prefWidth="811.0" promptText="Address" />
       <JFXTextField fx:id="phone" labelFloat="true" layoutX="16.0" layoutY="200.0" prefHeight="31.0" prefWidth="168.0" promptText="Phone Number" text=" +91 " />
       <JFXTextField fx:id="salary" labelFloat="true" layoutX="386.0" layoutY="200.0" promptText="Salary" />

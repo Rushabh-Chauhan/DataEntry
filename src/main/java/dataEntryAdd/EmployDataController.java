@@ -5,12 +5,15 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-import data.Data;
+import DataEntry.MainController;
 import data.Employ;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -33,7 +36,7 @@ public class EmployDataController implements Initializable{
 	@FXML
 	private Pane pane;
 	
-	public Data newEmploy;
+	public Employ newEmploy;
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) 
@@ -49,6 +52,13 @@ public class EmployDataController implements Initializable{
 
 		Stage stage = (Stage) this.pane.getScene().getWindow();
 		stage.close();
+//		final TreeItem<Employ> rootn = new RecursiveTreeItem<Employ>(MainController.employ, RecursiveTreeObject::getChildren);
+//        rootn.setExpanded(true);
+//        MainController.treeView.getColumns().setAll(MainController.name,MainController.address);
+//        MainController.treeView.setRoot(rootn);
+//        MainController.treeView.setShowRoot(false);
+//        MainController.treeView.setEditable(true);
+//        MainController.treeView.getSelectionModel().selectFirst();
 	}
 	
 	 @FXML
