@@ -23,8 +23,9 @@ public class Main extends Application{
 		stage.setTitle("DataEntry");
 
 
-		this.scene = new Scene(root, 1000, 700);
+		this.scene = new Scene(root);
 		stage.setScene(scene);
+		stage.setMaximized(true);
 		stage.show(); 
 	}
 

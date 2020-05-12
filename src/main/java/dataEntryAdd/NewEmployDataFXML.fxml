@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" focusTraversable="true" prefHeight="593.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataEntryAdd.EmployDataController">
+<Pane fx:id="pane" focusTraversable="true" prefHeight="593.0" prefWidth="843.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataEntryAdd.NewEmployDataController">
    <children>
       <Text fontSmoothingType="LCD" layoutX="296.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Employ" wrappingWidth="179.6708984375">
          <font>
