@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
+import Database.DatabaseHandler;
 import data.Employ;
 import data.Salary;
 import dataEntryAdd.NewEmployDataController;
@@ -46,7 +47,7 @@ public class MainController implements Initializable {
 
 
 
-	public ObservableList<Employ> employOList;
+	public static ObservableList<Employ> employOList;
 	public static ObservableList<Salary> salaryOList;
 	
 	@FXML
@@ -59,19 +60,27 @@ public class MainController implements Initializable {
 	private BorderPane boderPane;
 	
 	private static Employ rEmploy;
+	
+	public static DatabaseHandler database;
 
 
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) 
 	{
+		try {
+			database = new DatabaseHandler();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		employOList = FXCollections.observableArrayList();
 		this.EmployTreeColomns();
 	}
 
 	@FXML
-	void NewEmployData(ActionEvent event)throws IOException{
+	void NewEmployData(ActionEvent event)throws IOException,NullPointerException{
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/dataEntryAdd/NewEmployDataFXML.fxml"));
 		Parent root = loader.load();
@@ -82,9 +91,6 @@ public class MainController implements Initializable {
 		//stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setResizable(false);
 		stage.showAndWait(); 
-		NewEmployDataController c = loader.getController();
-		employOList.add(c.newEmploy);
-
 	}
 
 
@@ -125,22 +131,14 @@ public class MainController implements Initializable {
 				return param.getValue().getValue().getSalary();
 			}
 		});
-		JFXTreeTableColumn<Employ, String> tSalary = new JFXTreeTableColumn<>("Total Given Salary");
-		tSalary.setPrefWidth(300);
-		tSalary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
-				return param.getValue().getValue().getGivenSalary();
-			}
-		});
 
-		this.employOList.add(new Employ("rushabh","rushabh","7458","5000","45edfdf84"));
+		//this.employOList.add(new Employ("rushabh","rushabh","7458","5000","45edfdf84"));
 
 		EmployEditAndSalaryScreen();
 
 		TreeItem<Employ> root = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
 		root.setExpanded(true);
-		treeView.getColumns().setAll(name,address,phone,salary,tSalary);
+		treeView.getColumns().setAll(name,address,phone,salary);
 		treeView.setRoot(root);
 		treeView.setShowRoot(false);
 		treeView.setEditable(true);
@@ -148,6 +146,7 @@ public class MainController implements Initializable {
 
 	}
 
+	// edit and save screen properties.
 	private  void EmployEditAndSalaryScreen()
 	{
 		treeView.setOnMouseClicked(e->{
@@ -171,17 +170,13 @@ public class MainController implements Initializable {
 					stage.showAndWait(); 
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
 				}
-
-				EditEmployDataController c = loader.getController();
-				dat.getValue().GivenMoney(c.addTotalSalary);
-				
 				
 				
 				treeView.getSelectionModel().clearSelection();
-				TreeItem<Employ> item = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
-				treeView.setRoot(item);
+//				TreeItem<Employ> item = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
+//				treeView.setRoot(item);
 			}
 		});
 
@@ -190,11 +185,6 @@ public class MainController implements Initializable {
 	public static Employ getSelectedEmploy()
 	{
 		return rEmploy;
-	}
-	
-	public static  ObservableList<Salary> getsalarylist()
-	{
-		return salaryOList;
 	}
 
 	

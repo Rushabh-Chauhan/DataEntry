@@ -80,16 +80,18 @@ public class EditEmployDataController  implements Initializable{
 
 	@FXML
 	private JFXTextField commission;
-	
-	@FXML
-    private JFXTreeTableView<Salary> treeView;
 
+	@FXML
+	private JFXTreeTableView<Salary> treeView;
+
+	@FXML
+	private Button editSave;
 
 	public int addTotalSalary;
-	
-	
+
+
 	public  ObservableList<Salary> salaryOList;
-	
+
 	private Employ employ;
 
 
@@ -99,7 +101,7 @@ public class EditEmployDataController  implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{	
-		
+
 		// setting the employ tap to information.
 		this.employ = MainController.getSelectedEmploy();
 		this.date.setValue(LocalDate.now());
@@ -112,8 +114,8 @@ public class EditEmployDataController  implements Initializable{
 		// initilazing the observable list.
 		this.salaryOList = FXCollections.observableArrayList();
 		this.salaryOList.addAll(this.employ.getSalaryList());// getting the prexited salary list.
-		
-		
+
+
 		// setting the table tree columns
 		JFXTreeTableColumn<Salary, String> date = new JFXTreeTableColumn<>("Date");
 		date.setPrefWidth(300);
@@ -123,7 +125,7 @@ public class EditEmployDataController  implements Initializable{
 				return param.getValue().getValue().getDate();
 			}
 		});
-		
+
 		JFXTreeTableColumn<Salary, String> salaryC = new JFXTreeTableColumn<>("Salary");
 		salaryC.setPrefWidth(300);
 		salaryC.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
@@ -132,7 +134,7 @@ public class EditEmployDataController  implements Initializable{
 				return param.getValue().getValue().getSalay();
 			}
 		});
-		
+
 		JFXTreeTableColumn<Salary, String> commission = new JFXTreeTableColumn<>("Commission");
 		commission.setPrefWidth(300);
 		commission.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
@@ -141,7 +143,7 @@ public class EditEmployDataController  implements Initializable{
 				return param.getValue().getValue().getCommision();
 			}
 		});
-		
+
 		JFXTreeTableColumn<Salary, String> deduction = new JFXTreeTableColumn<>("Commission");
 		deduction.setPrefWidth(300);
 		deduction.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
@@ -150,7 +152,7 @@ public class EditEmployDataController  implements Initializable{
 				return param.getValue().getValue().getDeduction();
 			}
 		});
-		
+
 		JFXTreeTableColumn<Salary, String> description = new JFXTreeTableColumn<>("Description");
 		description.setPrefWidth(300);
 		description.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
@@ -159,9 +161,7 @@ public class EditEmployDataController  implements Initializable{
 				return param.getValue().getValue().getSalaryDescription();
 			}
 		});
-		
-		//this.salaryOList.add(new Salary(this.employ,LocalDate.now(),"5000","1000","500","hi there"));
-		
+
 		// adding the columns to the table
 		TreeItem<Salary> root = new RecursiveTreeItem<Salary>(salaryOList, RecursiveTreeObject::getChildren);
 		root.setExpanded(true);
@@ -175,11 +175,11 @@ public class EditEmployDataController  implements Initializable{
 	@FXML
 	void SaveData(ActionEvent event)   {
 
-		
+
 		int total = Integer.parseInt(this.commission.getText()) + Integer.parseInt(this.salary.getText())-Integer.parseInt(this.deduction.getText());
 		this.givenSalary.setText(total+"");
 		this.addTotalSalary = Integer.parseInt(this.givenSalary.getText());
-		
+
 		Salary s = new Salary(this.employ,this.date.getValue(),this.salary.getText(),this.commission.getText(),this.deduction.getText(),this.salaryDescription.getText());
 		this.salaryOList.add(s);
 		this.employ.addSalary(s);
@@ -191,6 +191,20 @@ public class EditEmployDataController  implements Initializable{
 		Stage stage = (Stage) this.pane.getScene().getWindow();
 		stage.close();
 	}
+
+	@FXML
+	void Edit(ActionEvent event) {
+		this.editButton.setDisable(true);
+		this.editButton.setOpacity(0);
+		this.editSave.setDisable(false);
+		this.editSave.setOpacity(1);
+
+
+	}
+	@FXML
+    void EditSave(ActionEvent event) {
+
+    }
 
 
 

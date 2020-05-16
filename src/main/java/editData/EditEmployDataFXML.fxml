@@ -1,57 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.validation.*?>
-<?import com.jfoenix.svg.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<JFXTabPane fx:id="pane" prefHeight="895.0" prefWidth="1283.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="editData.EditEmployDataController">
+<JFXTabPane fx:id="pane" prefHeight="895.0" prefWidth="1283.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="editData.EditEmployDataController">
    <tabs>
       <Tab text="Employ Details">
         <content>
           <AnchorPane fx:id="employDetails" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <AnchorPane layoutX="237.0" layoutY="148.0" prefHeight="858.0" prefWidth="1283.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <JFXTextField fx:id="phone" editable="false" labelFloat="true" layoutX="28.0" layoutY="494.0" prefHeight="60.0" prefWidth="300.0" promptText="Phone Number" text=" +91 ">
-                           <font>
-                              <Font size="18.0" />
-                           </font></JFXTextField>
-                        <JFXButton fx:id="editButton" layoutX="13.0" layoutY="14.0" text="Edit" underline="true">
-                           <font>
-                              <Font name="System Bold Italic" size="15.0" />
-                           </font>
-                        </JFXButton>
-                        <JFXTextField fx:id="name" alignment="CENTER" editable="false" labelFloat="true" layoutX="440.0" layoutY="127.0" prefHeight="72.0" prefWidth="404.0">
-                           <font>
-                              <Font size="27.0" />
-                           </font>
-                        </JFXTextField>
-                        <JFXTextField fx:id="address" editable="false" labelFloat="true" layoutX="28.0" layoutY="281.0" prefHeight="76.0" prefWidth="1227.0" promptText="Address">
-                           <font>
-                              <Font size="18.0" />
-                           </font></JFXTextField>
-                        <JFXTextField fx:id="salary" editable="false" labelFloat="true" layoutX="852.0" layoutY="494.0" prefHeight="60.0" prefWidth="300.0" promptText="Salary">
-                           <font>
-                              <Font size="18.0" />
-                           </font></JFXTextField>
-                        <JFXTextArea fx:id="description" editable="false" layoutX="13.0" layoutY="638.0" prefHeight="206.0" prefWidth="1257.0" promptText="Description (Optional)">
-                           <font>
-                              <Font size="18.0" />
-                           </font></JFXTextArea>
-                     </children>
-                  </AnchorPane>
+                  <BorderPane layoutX="-7.0">
+                     <center>
+                        <AnchorPane prefHeight="858.0" prefWidth="1283.0">
+                           <children>
+                              <JFXTextField fx:id="phone" editable="false" labelFloat="true" layoutX="28.0" layoutY="448.0" prefHeight="60.0" prefWidth="300.0" promptText="Phone Number" text=" +91 ">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXButton fx:id="editButton" layoutX="13.0" layoutY="14.0" onAction="#Edit" text="Edit" underline="true">
+                                 <font>
+                                    <Font name="System Bold Italic" size="15.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXTextField fx:id="name" alignment="CENTER" editable="false" labelFloat="true" layoutX="440.0" layoutY="127.0" prefHeight="72.0" prefWidth="404.0">
+                                 <font>
+                                    <Font size="27.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="address" editable="false" labelFloat="true" layoutX="28.0" layoutY="281.0" prefHeight="76.0" prefWidth="1227.0" promptText="Address">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="salary" editable="false" labelFloat="true" layoutX="852.0" layoutY="448.0" prefHeight="60.0" prefWidth="300.0" promptText="Salary">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextArea fx:id="description" editable="false" layoutX="20.0" layoutY="583.0" prefHeight="206.0" prefWidth="1257.0" promptText="Description (Optional)">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </JFXTextArea>
+                              <Button fx:id="editSave" defaultButton="true" disable="true" layoutX="-7.0" layoutY="801.0" mnemonicParsing="false" onAction="#EditSave" opacity="0.0" prefHeight="43.0" prefWidth="1331.0" text="Save" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="-41.0" />
+                           </children>
+                        </AnchorPane>
+                     </center>
+                  </BorderPane>
                </children></AnchorPane>
         </content>
       </Tab>
@@ -59,7 +65,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="46.0" layoutY="83.0" text="Date Of Salary Given" />
+                  <Label layoutX="46.0" layoutY="118.0" text="Date Of Salary Given" />
                   <DatePicker fx:id="date" editable="false" layoutX="42.0" layoutY="149.0" promptText="Date Of Salary Given" />
                   <JFXTextField fx:id="salary1" editable="false" labelFloat="true" layoutX="14.0" layoutY="247.0" prefHeight="65.0" prefWidth="200.0" promptText="Salary">
                      <font>
