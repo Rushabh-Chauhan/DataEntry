@@ -45,6 +45,7 @@
                               <ContextMenu>
                                 <items>
                                   <MenuItem mnemonicParsing="false" text="Edit" />
+                                    <MenuItem mnemonicParsing="false" onAction="#deleteEmploy" text="Delete" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>

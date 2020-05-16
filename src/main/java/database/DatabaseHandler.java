@@ -1,4 +1,4 @@
-package Database;
+package database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -11,16 +11,31 @@ import javax.swing.JOptionPane;
 
 public class DatabaseHandler {
 	
-	public static final String url = "jdbc:mysql://localhost:3306/employ";
-	public static Connection con = null;
-	public static Statement stat= null;
-	public String user = "root";
-	public String password = "Rushabhheena89";
+	private static DatabaseHandler handler = null;
 	
-	public DatabaseHandler()throws Exception
+	private static final String url = "jdbc:mysql://localhost:3306/employ";
+	private static Connection con = null;
+	private static Statement stat= null;
+	private String user = "root";
+	private String password = "Rushabhheena89";
+	
+	private DatabaseHandler()throws Exception
 	{
 		CreatConnection();
 		CreatTable();
+	}
+	
+	public static DatabaseHandler getHandler()
+	{
+		if(handler == null)
+		{
+			try {
+				handler = new DatabaseHandler();
+			} catch (Exception e) {
+				System.out.print("problem in creating new instance...."+e.getLocalizedMessage());;
+			}
+		}
+		return handler;
 	}
 	
 	public void CreatConnection()throws Exception
@@ -65,17 +80,19 @@ public class DatabaseHandler {
 		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
 		if(tables.next())
 		{
-			System.out.println("Table "+ tableName+" already exists. ready to go!");
+			//System.out.println("Table "+ tableName+" already exists. ready to go!");
 		}
 		else
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
 					+"`Name` varchar(50),"
-					+"`Address` varchar(50),"
+					+"`Address` TEXT(60000),"
 					+"`Phone Number` varchar(50),"
 					+"`Salary` varchar(50),"
-					+ "`description` varchar(50));");
+					+ "`description` TEXT(6000));");
 		}
+		
+		
 		
 	}
 

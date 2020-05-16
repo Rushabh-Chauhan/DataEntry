@@ -5,17 +5,15 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.jfoenix.effects.JFXDepthManager;
 
 import DataEntry.MainController;
-import Database.DatabaseHandler;
 import data.Employ;
+import database.DatabaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -37,6 +35,9 @@ public class NewEmployDataController implements Initializable{
 
 	@FXML
 	public Pane pane;
+	
+	@FXML
+    private Pane infopane;
 
 	public Employ newEmploy;
 	
@@ -46,11 +47,13 @@ public class NewEmployDataController implements Initializable{
 	public void initialize(URL url, ResourceBundle rb) 
 	{
 		this.database = MainController.database;
+		JFXDepthManager.setDepth(infopane, 1);
+		JFXDepthManager.setDepth(pane, 1);
 	}
 
 	@FXML
 	void SaveData(ActionEvent event) {
-
+		// checking if any data is not empty
 		if(name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty())
 		{
 			Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -61,6 +64,7 @@ public class NewEmployDataController implements Initializable{
 		}
 		else
 		{
+			// checking if the salary doesn't contain any text;
 			try {
 				Double.parseDouble(salary.getText());
 			} catch (NumberFormatException e) {
@@ -70,7 +74,7 @@ public class NewEmployDataController implements Initializable{
 				alert.showAndWait();
 				return;
 			}
-			this.newEmploy = new Employ(name.getText(),address.getText(),phone.getText(),salary.getText(),description.getText());
+			// inserting the data into the database.
 			String sql = "INSERT INTO EMPLOYTABLE VALUES("
 					+"'"+name.getText()+"',"
 					+"'"+address.getText()+"',"
@@ -83,7 +87,7 @@ public class NewEmployDataController implements Initializable{
 				alert.setHeaderText(null);
 				alert.setContentText("Success");
 				alert.showAndWait();
-				MainController.employOList.add(this.newEmploy);
+				//MainController.employOList.add(this.newEmploy);
 				Stage stage = (Stage) this.pane.getScene().getWindow();
 				stage.close();
 				return;
@@ -96,18 +100,13 @@ public class NewEmployDataController implements Initializable{
 				alert.showAndWait();
 				return;
 			}
-			
-			
-			
 		}
 	}
 
 	@FXML
 	void Cancel(ActionEvent event) {
-
 		Stage stage = (Stage) this.pane.getScene().getWindow();
 		stage.close();
 
 	}
-
 }

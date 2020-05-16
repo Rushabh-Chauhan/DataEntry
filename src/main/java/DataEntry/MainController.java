@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
@@ -13,10 +15,10 @@ import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-import Database.DatabaseHandler;
 import data.Employ;
 import data.Salary;
 import dataEntryAdd.NewEmployDataController;
+import database.DatabaseHandler;
 import editData.EditEmployDataController;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,6 +31,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
@@ -47,7 +50,7 @@ public class MainController implements Initializable {
 
 
 
-	public static ObservableList<Employ> employOList;
+	private ObservableList<Employ> employOList;
 	public static ObservableList<Salary> salaryOList;
 	
 	@FXML
@@ -69,14 +72,14 @@ public class MainController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) 
 	{
 		try {
-			database = new DatabaseHandler();
+			database = DatabaseHandler.getHandler();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.print("problem in loading database in maincontroller....."+e.getLocalizedMessage());
 		}
 
 		employOList = FXCollections.observableArrayList();
 		this.EmployTreeColomns();
+		this.loadEmployTable();
 	}
 
 	@FXML
@@ -92,6 +95,25 @@ public class MainController implements Initializable {
 		stage.setResizable(false);
 		stage.showAndWait(); 
 	}
+	
+	  @FXML
+	    void deleteEmploy(ActionEvent event) {
+		  TreeItem<Employ> selected = treeView.getSelectionModel().getSelectedItem();
+		  if(selected == null)
+		  {
+			  Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setHeaderText(null);
+				alert.setContentText("Please Select The Employ To Delete");
+				alert.showAndWait();
+				return;
+		  }
+		  
+		  Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setHeaderText("Delete Employ");
+			alert.setContentText("Are you sure do you want to delete "+selected.getValue().name);
+			alert.showAndWait();
+			return;
+	    }
 
 
 
@@ -100,7 +122,7 @@ public class MainController implements Initializable {
 	private void EmployTreeColomns()
 	{
 		JFXTreeTableColumn<Employ, String> name = new JFXTreeTableColumn<>("Name");
-		name.setPrefWidth(300);
+		name.setPrefWidth(460);
 		name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -108,7 +130,7 @@ public class MainController implements Initializable {
 			}
 		});
 		JFXTreeTableColumn<Employ, String> address = new JFXTreeTableColumn<>("Address");
-		address.setPrefWidth(450);
+		address.setPrefWidth(520);
 		address.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -116,7 +138,7 @@ public class MainController implements Initializable {
 			}
 		});
 		JFXTreeTableColumn<Employ, String> phone = new JFXTreeTableColumn<>("Phone Number");
-		phone.setPrefWidth(300);
+		phone.setPrefWidth(460);
 		phone.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -124,7 +146,7 @@ public class MainController implements Initializable {
 			}
 		});
 		JFXTreeTableColumn<Employ, String> salary = new JFXTreeTableColumn<>("Salary");
-		salary.setPrefWidth(300);
+		salary.setPrefWidth(460);
 		salary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -171,15 +193,33 @@ public class MainController implements Initializable {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
-				}
-				
-				
+				}			
 				treeView.getSelectionModel().clearSelection();
-//				TreeItem<Employ> item = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
-//				treeView.setRoot(item);
 			}
 		});
 
+	}
+	
+	private void loadEmployTable()
+	{
+		String sql = "SELECT * FROM EMPLOYTABLE";
+		ResultSet rs = database.executeQueri(sql);
+		try {
+			while(rs.next())
+			{
+				String name = rs.getString("Name");
+				String address = rs.getString("Address");
+				String phone = rs.getString("Phone Number");
+				String salary = rs.getString("Salary");
+				String des = rs.getString("description");
+				
+				this.employOList.add(new Employ(name,address,phone,salary,des));
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static Employ getSelectedEmploy()
