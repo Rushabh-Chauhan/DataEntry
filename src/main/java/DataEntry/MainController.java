@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -32,6 +33,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
@@ -111,7 +113,11 @@ public class MainController implements Initializable {
 		  Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 			alert.setHeaderText("Delete Employ");
 			alert.setContentText("Are you sure do you want to delete "+selected.getValue().name);
-			alert.showAndWait();
+			Optional<ButtonType> ans = alert.showAndWait();
+			if(ans.get() == ButtonType.OK)
+			{
+				
+			}
 			return;
 	    }
 
