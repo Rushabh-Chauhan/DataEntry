@@ -17,11 +17,13 @@ public class Employ extends RecursiveTreeObject<Employ>{
 	public String name;
 	public String description;
 	public String phone;
+	public String id;
 	public ObservableList<Salary> salaryOList;
 	
 
-	public Employ(String name, String address, String phone, String salary, String des)
+	public Employ(String id,String name, String address, String phone, String salary, String des)
 	{
+		this.id = id;
 		this.name = name;
 		this.phone = phone;
 		this.description = des;
@@ -48,6 +50,9 @@ public class Employ extends RecursiveTreeObject<Employ>{
 	}
 	public StringProperty getGivenSalary() {
 		return new SimpleStringProperty(this.tSalary+"");
+	}
+	public StringProperty getid() {
+		return new SimpleStringProperty(this.id);
 	}
 	public void GivenMoney(int money)
 	{

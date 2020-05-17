@@ -35,12 +35,15 @@ public class NewEmployDataController implements Initializable{
 
 	@FXML
 	public Pane pane;
-	
+
 	@FXML
-    private Pane infopane;
+	private Pane infopane;
+
+	@FXML
+	private JFXTextField id;
 
 	public Employ newEmploy;
-	
+
 	public DatabaseHandler database;
 
 	@Override
@@ -48,13 +51,13 @@ public class NewEmployDataController implements Initializable{
 	{
 		this.database = MainController.database;
 		JFXDepthManager.setDepth(infopane, 1);
-		JFXDepthManager.setDepth(pane, 1);
+		JFXDepthManager.setDepth(pane, 1);		
 	}
 
 	@FXML
 	void SaveData(ActionEvent event) {
 		// checking if any data is not empty
-		if(name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty())
+		if(id.getText().isEmpty()||name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty())
 		{
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
@@ -76,6 +79,7 @@ public class NewEmployDataController implements Initializable{
 			}
 			// inserting the data into the database.
 			String sql = "INSERT INTO EMPLOYTABLE VALUES("
+					+"'"+id.getText()+"',"
 					+"'"+name.getText()+"',"
 					+"'"+address.getText()+"',"
 					+"'"+phone.getText()+"',"
@@ -83,11 +87,8 @@ public class NewEmployDataController implements Initializable{
 					+"'"+description.getText()+"');";
 			if(this.database.executeAction(sql))
 			{
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText(null);
-				alert.setContentText("Success");
-				alert.showAndWait();
-				//MainController.employOList.add(this.newEmploy);
+				//Refreshing the table;
+				newEmploy = new Employ(id.getText(),name.getText(),address.getText(),phone.getText(),salary.getText(),description.getText());
 				Stage stage = (Stage) this.pane.getScene().getWindow();
 				stage.close();
 				return;

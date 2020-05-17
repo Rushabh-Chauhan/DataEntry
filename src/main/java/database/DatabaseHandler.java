@@ -3,11 +3,14 @@ package database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
+
+import data.Employ;
 
 public class DatabaseHandler {
 	
@@ -72,6 +75,22 @@ public class DatabaseHandler {
 		
 	}
 	
+	public boolean deleteEmploy(Employ employ)
+	{
+		
+		try {
+			String deletestatement = "delete from Employtable where id = ?;";
+			PreparedStatement stm = con.prepareStatement(deletestatement);
+			stm.setString(1, employ.id);
+			stm.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public void CreatTable()throws Exception
 	{
 		String tableName = "employtable";
@@ -85,11 +104,13 @@ public class DatabaseHandler {
 		else
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
+					+"`ID` varchar(50),"
 					+"`Name` varchar(50),"
 					+"`Address` TEXT(60000),"
 					+"`Phone Number` varchar(50),"
 					+"`Salary` varchar(50),"
-					+ "`description` TEXT(6000));");
+					+ "`description` TEXT(6000),"
+					+ "PRIMARY KEY (`ID`));");
 		}
 		
 		

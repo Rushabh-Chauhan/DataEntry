@@ -2,17 +2,13 @@ package DataEntry;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
@@ -20,39 +16,30 @@ import data.Employ;
 import data.Salary;
 import dataEntryAdd.NewEmployDataController;
 import database.DatabaseHandler;
-import editData.EditEmployDataController;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 public class MainController implements Initializable {
 
 
 
-	private ObservableList<Employ> employOList;
+	private  ObservableList<Employ> employOList;
 	public static ObservableList<Salary> salaryOList;
 	
 	@FXML
@@ -96,6 +83,9 @@ public class MainController implements Initializable {
 		//stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setResizable(false);
 		stage.showAndWait(); 
+		
+		NewEmployDataController c = loader.getController();
+		this.employOList.add(c.newEmploy);
 	}
 	
 	  @FXML
@@ -116,7 +106,22 @@ public class MainController implements Initializable {
 			Optional<ButtonType> ans = alert.showAndWait();
 			if(ans.get() == ButtonType.OK)
 			{
-				
+				boolean result = database.deleteEmploy(selected.getValue());
+				if(result)
+				{
+					// Refreshes the list after the deletion; 
+					this.employOList.clear();
+					this.loadEmployTable();
+					
+				}
+				else// error when not deleted
+				{
+					Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+					alert1.setHeaderText(null);
+					alert1.setContentText("Deletion failed. Try again");
+					alert1.showAndWait();
+					return;
+				}
 			}
 			return;
 	    }
@@ -213,13 +218,14 @@ public class MainController implements Initializable {
 		try {
 			while(rs.next())
 			{
+				String id = rs.getString("ID");
 				String name = rs.getString("Name");
 				String address = rs.getString("Address");
 				String phone = rs.getString("Phone Number");
 				String salary = rs.getString("Salary");
 				String des = rs.getString("description");
 				
-				this.employOList.add(new Employ(name,address,phone,salary,des));
+				employOList.add(new Employ(id,name,address,phone,salary,des));
 				
 			}
 		} catch (SQLException e) {
