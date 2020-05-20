@@ -12,8 +12,8 @@ public class Employ extends RecursiveTreeObject<Employ>{
 
 
 	public String address;
-	public int salary;
-	public int tSalary;
+	public double salary;
+	public double tSalary;
 	public String name;
 	public String description;
 	public String phone;
@@ -58,7 +58,7 @@ public class Employ extends RecursiveTreeObject<Employ>{
 	{
 		this.tSalary += money;
 	}
-	public int gettSalary() {
+	public double gettSalary() {
 		return tSalary;
 	}
 	

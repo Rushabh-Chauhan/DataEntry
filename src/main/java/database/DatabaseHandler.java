@@ -13,21 +13,22 @@ import javax.swing.JOptionPane;
 import data.Employ;
 
 public class DatabaseHandler {
-	
+
 	private static DatabaseHandler handler = null;
-	
+
 	private static final String url = "jdbc:mysql://localhost:3306/employ";
 	private static Connection con = null;
 	private static Statement stat= null;
 	private String user = "root";
 	private String password = "Rushabhheena89";
-	
+
 	private DatabaseHandler()throws Exception
 	{
 		CreatConnection();
-		CreatTable();
+		creatEmployTable();
+		creatSalaryTable();
 	}
-	
+
 	public static DatabaseHandler getHandler()
 	{
 		if(handler == null)
@@ -40,14 +41,14 @@ public class DatabaseHandler {
 		}
 		return handler;
 	}
-	
+
 	public void CreatConnection()throws Exception
 	{
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		con = DriverManager.getConnection(url, user, password);
-		
+
 	}
-	
+
 	public ResultSet executeQueri(String sql)
 	{
 		ResultSet result = null;
@@ -60,7 +61,7 @@ public class DatabaseHandler {
 		}
 		return result;
 	}
-	
+
 	public boolean executeAction(String sql)
 	{
 		try {
@@ -72,12 +73,11 @@ public class DatabaseHandler {
 			System.out.print("Exception in executeAction:DatabaseHandler......."+e.getLocalizedMessage());
 			return false;
 		}
-		
+
 	}
-	
+
 	public boolean deleteEmploy(Employ employ)
 	{
-		
 		try {
 			String deletestatement = "delete from Employtable where id = ?;";
 			PreparedStatement stm = con.prepareStatement(deletestatement);
@@ -90,8 +90,29 @@ public class DatabaseHandler {
 		}
 		return false;
 	}
-	
-	public void CreatTable()throws Exception
+
+	public boolean updateEmploy(Employ employ)
+	{
+
+		try {
+			String update = "UPDATE employtable SET Name = ?, Address = ?,Phone = ?,Salary = ?,description = ? WHERE ID = ?;";
+			PreparedStatement stmt = con.prepareStatement(update);
+			stmt.setString(1, employ.name);
+			stmt.setString(2, employ.address);
+			stmt.setString(3, employ.phone);
+			stmt.setString(4, employ.salary+"");
+			stmt.setString(5, employ.description);
+			stmt.setString(6, employ.id);
+			int result = stmt.executeUpdate();
+			return (result>0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.print("problem in DatabaseHandler/updateEmploy....."+e.getLocalizedMessage());
+			return false;
+		}
+	}
+
+	public void creatEmployTable()throws Exception
 	{
 		String tableName = "employtable";
 		stat = con.createStatement();
@@ -107,14 +128,37 @@ public class DatabaseHandler {
 					+"`ID` varchar(50),"
 					+"`Name` varchar(50),"
 					+"`Address` TEXT(60000),"
-					+"`Phone Number` varchar(50),"
+					+"`Phone` varchar(50),"
 					+"`Salary` varchar(50),"
 					+ "`description` TEXT(6000),"
 					+ "PRIMARY KEY (`ID`));");
 		}
-		
-		
-		
+	}
+
+	public void creatSalaryTable()throws Exception
+	{
+		String tableName = "salarytable";
+		stat = con.createStatement();
+		DatabaseMetaData dbm = con.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
+		if(tables.next())
+		{
+			//System.out.println("Table "+ tableName+" already exists. ready to go!");
+		}
+		else
+		{
+			stat.execute("CREATE TABLE `"+ tableName +"`("
+					+"`ID` varchar(50),"
+					+"`Date` varchar(50),"
+					+"`salary` varchar(50),"
+					+"`commission` varchar(50),"
+					+"`deduction` varchar(50),"
+					+ "`description` TEXT(6000),"
+					+ "PRIMARY KEY (`ID`));");
+		}
+
+
+
 	}
 
 }
