@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="663.0" prefWidth="844.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Moneycontrollers.GiveSalaryController">
+   <children>
+      <Label layoutX="340.0" layoutY="34.0" text="Date Of Salary Given">
+         <font>
+            <Font name="System Italic" size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="date" layoutX="313.0" layoutY="71.0" />
+      <JFXTextField fx:id="salary" labelFloat="true" layoutX="39.0" layoutY="214.0" promptText="Salary" />
+      <JFXTextField fx:id="commision" labelFloat="true" layoutX="328.0" layoutY="215.0" promptText="Commision" />
+      <JFXTextField fx:id="deduction" labelFloat="true" layoutX="600.0" layoutY="215.0" promptText="Deduction" />
+      <Label layoutX="251.0" layoutY="211.0" text="+">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="550.0" layoutY="203.0" text="-">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="total" labelFloat="true" layoutX="313.0" layoutY="318.0" promptText="Total" />
+      <JFXTextArea fx:id="description" layoutX="25.0" layoutY="421.0" prefHeight="172.0" prefWidth="795.0" />
+      <Button defaultButton="true" layoutX="343.0" layoutY="601.0" mnemonicParsing="false" onAction="#save" prefHeight="31.0" prefWidth="139.0" text="SAVE">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -41,7 +41,7 @@ public class MainController implements Initializable {
 
 	private  ObservableList<Employ> employOList;
 	public static ObservableList<Salary> salaryOList;
-	
+
 	@FXML
 	private JFXTreeTableView<Employ> treeView;
 
@@ -50,9 +50,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private BorderPane boderPane;
-	
+
 	private static Employ rEmploy;
-	
+
 	public static DatabaseHandler database;
 
 
@@ -83,48 +83,65 @@ public class MainController implements Initializable {
 		//stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setResizable(false);
 		stage.showAndWait(); 
-		
+
 		NewEmployDataController c = loader.getController();
 		this.employOList.add(c.newEmploy);
 	}
-	
-	  @FXML
-	    void deleteEmploy(ActionEvent event) {
-		  TreeItem<Employ> selected = treeView.getSelectionModel().getSelectedItem();
-		  if(selected == null)
-		  {
-			  Alert alert = new Alert(Alert.AlertType.ERROR);
-				alert.setHeaderText(null);
-				alert.setContentText("Please Select The Employ To Delete");
-				alert.showAndWait();
-				return;
-		  }
-		  
-		  Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setHeaderText("Delete Employ");
-			alert.setContentText("Are you sure do you want to delete "+selected.getValue().name);
-			Optional<ButtonType> ans = alert.showAndWait();
-			if(ans.get() == ButtonType.OK)
-			{
-				boolean result = database.deleteEmploy(selected.getValue());
-				if(result)
-				{
-					// Refreshes the list after the deletion; 
-					this.employOList.clear();
-					this.loadEmployTable();
-					
-				}
-				else// error when not deleted
-				{
-					Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-					alert1.setHeaderText(null);
-					alert1.setContentText("Deletion failed. Try again");
-					alert1.showAndWait();
-					return;
-				}
-			}
+
+	@FXML
+	void deleteEmploy(ActionEvent event) {
+		TreeItem<Employ> selected = treeView.getSelectionModel().getSelectedItem();
+		if(selected == null)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("Please Select The Employ To Delete");
+			alert.showAndWait();
 			return;
-	    }
+		}
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setHeaderText("Delete Employ");
+		alert.setContentText("Are you sure do you want to delete "+selected.getValue().name);
+		Optional<ButtonType> ans = alert.showAndWait();
+		if(ans.get() == ButtonType.OK)
+		{
+			boolean result = database.deleteEmploy(selected.getValue());
+			if(result)
+			{
+				// Refreshes the list after the deletion; 
+				this.employOList.clear();
+				this.loadEmployTable();
+
+			}
+			else// error when not deleted
+			{
+				Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+				alert1.setHeaderText(null);
+				alert1.setContentText("Deletion failed. Try again");
+				alert1.showAndWait();
+				return;
+			}
+		}
+		return;
+	}
+
+
+	@FXML
+	void giveSalary(ActionEvent event) throws IOException {
+		
+		TreeItem<Employ> dat = treeView.getSelectionModel().getSelectedItem();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/GiveSalaryFXML.fxml"));
+		Parent root = loader.load();
+		Stage stage = new Stage();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		//stage.initStyle(StageStyle.TRANSPARENT);
+		stage.setTitle(dat.getValue().name);
+		stage.setResizable(false);
+		stage.showAndWait(); 
+	}
 
 
 
@@ -183,8 +200,6 @@ public class MainController implements Initializable {
 	private  void EmployEditAndSalaryScreen()
 	{
 		treeView.setOnMouseClicked(e->{
-
-
 			if (e.getClickCount() == 2 && treeView.getSelectionModel().getSelectedItem() != null)
 			{
 				TreeItem<Employ> dat = treeView.getSelectionModel().getSelectedItem();
@@ -198,19 +213,21 @@ public class MainController implements Initializable {
 					stage.setScene(scene);
 					stage.initModality(Modality.APPLICATION_MODAL);
 					//stage.initStyle(StageStyle.TRANSPARENT);
-					stage.setResizable(true);
+					stage.setResizable(false);
 					stage.setTitle(dat.getValue().name);
 					stage.showAndWait(); 
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
 				}			
 				treeView.getSelectionModel().clearSelection();
+				//Refreshes the table. 
+				this.employOList.clear();
+				this.loadEmployTable();
 			}
 		});
 
 	}
-	
+
 	private void loadEmployTable()
 	{
 		String sql = "SELECT * FROM EMPLOYTABLE";
@@ -221,12 +238,12 @@ public class MainController implements Initializable {
 				String id = rs.getString("ID");
 				String name = rs.getString("Name");
 				String address = rs.getString("Address");
-				String phone = rs.getString("Phone Number");
+				String phone = rs.getString("Phone");
 				String salary = rs.getString("Salary");
 				String des = rs.getString("description");
-				
+
 				employOList.add(new Employ(id,name,address,phone,salary,des));
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -239,9 +256,9 @@ public class MainController implements Initializable {
 		return rEmploy;
 	}
 
-	
-	
-	
+
+
+
 
 
 

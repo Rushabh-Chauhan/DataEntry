@@ -12,9 +12,9 @@ import javafx.collections.ObservableList;
 public class Salary extends RecursiveTreeObject<Salary>{
 	
 	public LocalDate date;
-	public int commission;
-	public int salary;
-	public int deduction;
+	public double commission;
+	public double salary;
+	public double deduction;
 	public String salaryDescription;
 	public Employ employ;
 	//public  ObservableList<Salary> salaryOList;
