@@ -149,16 +149,17 @@ public class DatabaseHandler {
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
 					+"`ID` varchar(50),"
-					+"`Date` varchar(50),"
+					+"`Date` DATE,"
 					+"`salary` varchar(50),"
 					+"`commission` varchar(50),"
 					+"`deduction` varchar(50),"
-					+ "`description` TEXT(6000),"
-					+ "PRIMARY KEY (`ID`));");
+					+"`Total` varchar(50),"
+					+ "`description` TEXT(6000));");
 		}
 
 
 
 	}
-
 }
+
+

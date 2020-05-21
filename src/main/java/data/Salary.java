@@ -15,18 +15,20 @@ public class Salary extends RecursiveTreeObject<Salary>{
 	public double commission;
 	public double salary;
 	public double deduction;
+	public double total;
 	public String salaryDescription;
-	public Employ employ;
+	public String id;
 	//public  ObservableList<Salary> salaryOList;
 	
-	public Salary(Employ employ, LocalDate date, String salary, String Commision, String Deduction, String des)
+	public Salary(String id, LocalDate date, String salary, String Commision, String Deduction,String total, String des)
 	{
 		this.date = date;
-		this.salary = Integer.parseInt(salary);
-		this.commission = Integer.parseInt(Commision);
-		this.deduction = Integer.parseInt(Deduction);
+		this.salary = Double.parseDouble(salary);
+		this.commission = Double.parseDouble(Commision);
+		this.deduction = Double.parseDouble(Deduction);
+		this.total = Double.parseDouble(total);
 		this.salaryDescription = des;
-		this.employ = employ;
+		this.id = id;
 		//this.salaryOList = FXCollections.observableArrayList();
 	}
 	
@@ -42,6 +44,9 @@ public class Salary extends RecursiveTreeObject<Salary>{
 	}
 	public StringProperty getSalaryDescription() {
 		return new SimpleStringProperty(this.salaryDescription+"");
+	}
+	public StringProperty gettotal() {
+		return new SimpleStringProperty(this.total+"");
 	}
 	
 	public StringProperty getSalay() {

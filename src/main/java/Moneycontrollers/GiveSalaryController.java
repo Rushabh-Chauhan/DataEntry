@@ -7,11 +7,17 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
+import DataEntry.MainController;
+import data.Employ;
+import data.Salary;
+import database.DatabaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class GiveSalaryController implements Initializable {
 
@@ -33,10 +39,20 @@ public class GiveSalaryController implements Initializable {
 	@FXML
 	private JFXTextField commision;
 
+	@FXML
+	private AnchorPane pane;
+
+	private Employ employ; 
+
+	private DatabaseHandler database;
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) 
 	{
+		this.employ = MainController.getSelectedEmploy();
 		this.date.setValue(LocalDate.now());
+		this.salary.setText(employ.salary+"");
+		this.database = DatabaseHandler.getHandler();
 
 	}
 
@@ -64,11 +80,43 @@ public class GiveSalaryController implements Initializable {
 				return;
 			}
 		}
+		this.total.setText(this.calculate()+"");
+
+		String sql = "INSERT INTO SALARYTABLE VALUES("
+				+"'"+employ.id+"',"
+				+"'"+this.date.getValue()+"',"
+				+"'"+this.salary.getText()+"',"
+				+"'"+this.commision.getText()+"',"
+				+"'"+this.deduction.getText()+"',"
+				+"'"+this.total.getText()+"',"
+				+"'"+this.description.getText()+"');";
+		if(this.database.executeAction(sql))
+		{
+			//Refreshing the table;
+			//Salary money = new Salary(this.employ.id,this.date.getValue(),this.salary.getText(),this.commision.getText(),this.deduction.getText(),description.getText());
+			Stage stage = (Stage) this.pane.getScene().getWindow();
+			stage.close();
+			return;
+		}
+		else// error
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("Adding to the database failed");
+			alert.showAndWait();
+			return;
+		}
 
 	}
-	
-	public int calculate() {
-		int total = Integer.parseInt(this.commision.getText()) + Integer.parseInt(this.salary.getText())-Integer.parseInt(this.deduction.getText());
+
+	@FXML
+	void calculate(ActionEvent event) {
+		this.total.setText(this.calculate()+"");
+
+	}
+
+	public Double calculate() {
+		Double total = Double.parseDouble(this.commision.getText()) + Double.parseDouble(this.salary.getText())-Double.parseDouble(this.deduction.getText());
 		return total;
 	}
 

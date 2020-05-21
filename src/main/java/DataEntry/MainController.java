@@ -130,7 +130,7 @@ public class MainController implements Initializable {
 	@FXML
 	void giveSalary(ActionEvent event) throws IOException {
 		
-		TreeItem<Employ> dat = treeView.getSelectionModel().getSelectedItem();
+		rEmploy = treeView.getSelectionModel().getSelectedItem().getValue();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/GiveSalaryFXML.fxml"));
 		Parent root = loader.load();
 		Stage stage = new Stage();
@@ -138,8 +138,9 @@ public class MainController implements Initializable {
 		stage.setScene(scene);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		//stage.initStyle(StageStyle.TRANSPARENT);
-		stage.setTitle(dat.getValue().name);
+		stage.setTitle(rEmploy.name);
 		stage.setResizable(false);
+		treeView.getSelectionModel().clearSelection();
 		stage.showAndWait(); 
 	}
 
