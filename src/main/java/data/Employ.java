@@ -28,7 +28,7 @@ public class Employ extends RecursiveTreeObject<Employ>{
 		this.phone = phone;
 		this.description = des;
 		this.address = address;
-		this.salary = Integer.parseInt(salary);
+		this.salary = Double.parseDouble(salary);
 		this.tSalary = 0;
 		this.salaryOList = FXCollections.observableArrayList();
 	}

@@ -22,8 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-
-
 public class EditEmployDataController implements Initializable{
 
 	@FXML
@@ -115,8 +113,6 @@ public class EditEmployDataController implements Initializable{
 			alert.setContentText("The employ data is not updated please call support");
 			alert.showAndWait();
 		}
-
-		
 		Stage stage = (Stage) this.pane.getScene().getWindow();
 		stage.close();
 	}
