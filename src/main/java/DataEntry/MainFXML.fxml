@@ -32,6 +32,11 @@
                   <MenuItem mnemonicParsing="false" text="Storage Data" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Statistics">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#SalaryTable" text="Salary Table" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
@@ -42,7 +47,7 @@
               <content>
                 <AnchorPane>
                      <children>
-                        <JFXTreeTableView fx:id="treeView" currentItemsCount="5" editable="true" prefHeight="532.0" prefWidth="871.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <JFXTreeTableView fx:id="employTreeView" currentItemsCount="5" editable="true" prefHeight="532.0" prefWidth="871.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <opaqueInsets>
                               <Insets left="5.0" />
                            </opaqueInsets>
@@ -59,9 +64,12 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Dealer Tab">
+            <Tab text="Salary Table">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXTreeTableView fx:id="salaryTreeView" />
+                     </children></AnchorPane>
               </content>
             </Tab>
          </tabs>

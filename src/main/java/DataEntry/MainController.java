@@ -43,7 +43,10 @@ public class MainController implements Initializable {
 	public static ObservableList<Salary> salaryOList;
 
 	@FXML
-	private JFXTreeTableView<Employ> treeView;
+	private JFXTreeTableView<Employ> employTreeView;
+
+	@FXML
+	private JFXTreeTableView<Salary> salaryTreeView;
 
 	@FXML
 	private AnchorPane employTab;
@@ -68,7 +71,7 @@ public class MainController implements Initializable {
 
 		employOList = FXCollections.observableArrayList();
 		this.EmployTreeColomns();
-		this.loadEmployTable();
+		this.loadEmployTable(); 
 	}
 
 	@FXML
@@ -90,7 +93,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	void deleteEmploy(ActionEvent event) {
-		TreeItem<Employ> selected = treeView.getSelectionModel().getSelectedItem();
+		TreeItem<Employ> selected = employTreeView.getSelectionModel().getSelectedItem();
 		if(selected == null)
 		{
 			Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -129,8 +132,8 @@ public class MainController implements Initializable {
 
 	@FXML
 	void giveSalary(ActionEvent event) throws IOException {
-		
-		rEmploy = treeView.getSelectionModel().getSelectedItem().getValue();
+
+		rEmploy = employTreeView.getSelectionModel().getSelectedItem().getValue();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/GiveSalaryFXML.fxml"));
 		Parent root = loader.load();
 		Stage stage = new Stage();
@@ -140,9 +143,30 @@ public class MainController implements Initializable {
 		//stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setTitle(rEmploy.name);
 		stage.setResizable(false);
-		treeView.getSelectionModel().clearSelection();
+		employTreeView.getSelectionModel().clearSelection();
 		stage.showAndWait(); 
 	}
+	
+	 @FXML
+	    void SalaryTable(ActionEvent event) {
+		 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/SalaryTableFXML.fxml"));
+			Parent root = null;
+			try {
+				root = loader.load();
+				Stage stage = new Stage();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.initModality(Modality.APPLICATION_MODAL);
+				//stage.initStyle(StageStyle.TRANSPARENT);
+				stage.setTitle("Salary Table");
+				stage.showAndWait(); 
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("problem in loading salary table...."+e.getLocalizedMessage());
+			}
+			
+
+	    }
 
 
 
@@ -185,25 +209,25 @@ public class MainController implements Initializable {
 
 		//this.employOList.add(new Employ("rushabh","rushabh","7458","5000","45edfdf84"));
 
-		EmployEditAndSalaryScreen();
+		employEditScreen();
 
 		TreeItem<Employ> root = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
 		root.setExpanded(true);
-		treeView.getColumns().setAll(name,address,phone,salary);
-		treeView.setRoot(root);
-		treeView.setShowRoot(false);
-		treeView.setEditable(true);
+		employTreeView.getColumns().setAll(name,address,phone,salary);
+		employTreeView.setRoot(root);
+		employTreeView.setShowRoot(false);
+		employTreeView.setEditable(true);
 
 
 	}
 
 	// edit and save screen properties.
-	private  void EmployEditAndSalaryScreen()
+	private  void employEditScreen()
 	{
-		treeView.setOnMouseClicked(e->{
-			if (e.getClickCount() == 2 && treeView.getSelectionModel().getSelectedItem() != null)
+		employTreeView.setOnMouseClicked(e->{
+			if (e.getClickCount() == 2 && employTreeView.getSelectionModel().getSelectedItem() != null)
 			{
-				TreeItem<Employ> dat = treeView.getSelectionModel().getSelectedItem();
+				TreeItem<Employ> dat = employTreeView.getSelectionModel().getSelectedItem();
 				rEmploy = dat.getValue();	
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/editData/EditEmployDataFXML.fxml"));
 				Parent root = null;
@@ -220,7 +244,7 @@ public class MainController implements Initializable {
 				} catch (IOException e1) {
 					System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
 				}			
-				treeView.getSelectionModel().clearSelection();
+				employTreeView.getSelectionModel().clearSelection();
 				//Refreshes the table. 
 				this.employOList.clear();
 				this.loadEmployTable();
@@ -228,6 +252,59 @@ public class MainController implements Initializable {
 		});
 
 	}
+
+//	// salary table;
+//	private void salarytable()
+//	{
+//		JFXTreeTableColumn<Salary, String> name = new JFXTreeTableColumn<>("Name");
+//		name.setPrefWidth(460);
+//		name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+//			@Override
+//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+//				return param.getValue().getValue().employ.getName();
+//			}
+//		});
+//		JFXTreeTableColumn<Salary, String> date = new JFXTreeTableColumn<>("Date");
+//		date.setPrefWidth(220);
+//		date.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+//			@Override
+//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+//				return param.getValue().getValue().getDate();
+//			}
+//		});
+//		JFXTreeTableColumn<Salary, String> salary = new JFXTreeTableColumn<>("Salary");
+//		salary.setPrefWidth(460);
+//		salary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+//			@Override
+//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+//				return param.getValue().getValue().getSalay();
+//			}
+//		});
+//		JFXTreeTableColumn<Salary, String> commision = new JFXTreeTableColumn<>("Commision");
+//		commision.setPrefWidth(460);
+//		commision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+//			@Override
+//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+//				return param.getValue().getValue().getCommision();
+//			}
+//		});
+//		JFXTreeTableColumn<Salary, String> deduction = new JFXTreeTableColumn<>("Deduction");
+//		deduction.setPrefWidth(460);
+//		deduction.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+//			@Override
+//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+//				return param.getValue().getValue().getDeduction();
+//			}
+//		});
+//		JFXTreeTableColumn<Salary, String> total = new JFXTreeTableColumn<>("Total");
+//		total.setPrefWidth(460);
+//		total.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+//			@Override
+//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+//				return param.getValue().getValue().gettotal();
+//			}
+//		});
+//	}
 
 	private void loadEmployTable()
 	{

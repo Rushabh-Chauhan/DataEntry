@@ -2,6 +2,7 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 import data.Employ;
+import data.Salary;
 
 public class DatabaseHandler {
 
@@ -95,6 +97,7 @@ public class DatabaseHandler {
 	{
 
 		try {
+					
 			String update = "UPDATE employtable SET Name = ?, Address = ?,Phone = ?,Salary = ?,description = ? WHERE ID = ?;";
 			PreparedStatement stmt = con.prepareStatement(update);
 			stmt.setString(1, employ.name);
@@ -103,13 +106,16 @@ public class DatabaseHandler {
 			stmt.setString(4, employ.salary+"");
 			stmt.setString(5, employ.description);
 			stmt.setString(6, employ.id);
-			int result = stmt.executeUpdate();
-			return (result>0);
+			int result = stmt.executeUpdate();	
+			
+			return (result >0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.print("problem in DatabaseHandler/updateEmploy....."+e.getLocalizedMessage());
 			return false;
 		}
+
+		
 	}
 
 	public void creatEmployTable()throws Exception
@@ -148,13 +154,15 @@ public class DatabaseHandler {
 		else
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
-					+"`ID` varchar(50),"
+					+"`payment_id` varchar(700),"
+					+"`Name` varchar(50),"
 					+"`Date` DATE,"
 					+"`salary` varchar(50),"
 					+"`commission` varchar(50),"
 					+"`deduction` varchar(50),"
 					+"`Total` varchar(50),"
-					+ "`description` TEXT(6000));");
+					+ "`description` TEXT(6000),"
+					+ "PRIMARY KEY (`payment_id`));");
 		}
 
 

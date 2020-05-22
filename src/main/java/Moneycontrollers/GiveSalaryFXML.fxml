@@ -28,7 +28,8 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="total" labelFloat="true" layoutX="313.0" layoutY="318.0" promptText="Total" />
+      <JFXTextField fx:id="total" labelFloat="true" layoutX="36.0" layoutY="289.0" promptText="Total" />
+      <JFXTextField fx:id="payment" labelFloat="true" layoutX="373.0" layoutY="289.0" promptText="Check number or Cash" />
       <JFXTextArea fx:id="description" layoutX="25.0" layoutY="421.0" prefHeight="172.0" prefWidth="795.0" promptText="Description (Optional)">
          <font>
             <Font name="System Italic" size="17.0" />
@@ -38,6 +39,7 @@
             <Font size="22.0" />
          </font>
       </Button>
-      <JFXButton buttonType="RAISED" layoutX="358.0" layoutY="356.0" onAction="#calculate" ripplerFill="#0f96da" style="-fx-background-color: lightblue;" text="Calculate" />
+      <JFXButton buttonType="RAISED" layoutX="39.0" layoutY="352.0" onAction="#calculate" ripplerFill="#0f96da" style="-fx-background-color: lightblue;" text="Calculate" />
+      <Label layoutX="365.0" layoutY="332.0" text="*Enter 'cash' if paid by cash" />
    </children>
 </AnchorPane>

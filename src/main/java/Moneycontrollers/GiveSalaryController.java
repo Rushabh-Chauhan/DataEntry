@@ -1,6 +1,8 @@
 package Moneycontrollers;
 
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -9,7 +11,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import DataEntry.MainController;
 import data.Employ;
-import data.Salary;
 import database.DatabaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,23 +43,29 @@ public class GiveSalaryController implements Initializable {
 	@FXML
 	private AnchorPane pane;
 
+	@FXML
+	private JFXTextField payment;
+
+
 	private Employ employ; 
 
 	private DatabaseHandler database;
 
+	private int count = 0;
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) 
 	{
+		
 		this.employ = MainController.getSelectedEmploy();
 		this.date.setValue(LocalDate.now());
 		this.salary.setText(employ.salary+"");
 		this.database = DatabaseHandler.getHandler();
-
 	}
 
 	@FXML
 	void save(ActionEvent event) {
-		if(this.salary.getText().isEmpty() || this.commision.getText().isEmpty()||this.deduction.getText().isEmpty())
+		if(this.payment.getText().isEmpty()||this.salary.getText().isEmpty() || this.commision.getText().isEmpty()||this.deduction.getText().isEmpty())
 		{
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
@@ -80,10 +87,29 @@ public class GiveSalaryController implements Initializable {
 				return;
 			}
 		}
-		this.total.setText(this.calculate()+"");
+		this.total.setText(this.calculate()+""); 
+		if(this.payment.getText().toUpperCase().equals("CASH")) 
+		{
+			// getting the count to its right counter;
+			String sql = "SELECT * FROM SALARYTABLE";
+			ResultSet rs = database.executeQueri(sql);
+			try {
+				while(rs.next())
+				{
+					if(rs.getString("payment_id").equals("@"+this.count))
+					{
+						count++;
+					}	
+				}
+			} catch (SQLException e) {
+				System.out.print("problem in getting count...."+e.getLocalizedMessage());
+			}
+			this.payment.setText("@"+this.count);
+		}
 
 		String sql = "INSERT INTO SALARYTABLE VALUES("
-				+"'"+employ.id+"',"
+				+"'"+this.payment.getText()+"',"
+				+"'"+this.employ.name+"',"
 				+"'"+this.date.getValue()+"',"
 				+"'"+this.salary.getText()+"',"
 				+"'"+this.commision.getText()+"',"
@@ -93,7 +119,6 @@ public class GiveSalaryController implements Initializable {
 		if(this.database.executeAction(sql))
 		{
 			//Refreshing the table;
-			//Salary money = new Salary(this.employ.id,this.date.getValue(),this.salary.getText(),this.commision.getText(),this.deduction.getText(),description.getText());
 			Stage stage = (Stage) this.pane.getScene().getWindow();
 			stage.close();
 			return;
@@ -106,7 +131,6 @@ public class GiveSalaryController implements Initializable {
 			alert.showAndWait();
 			return;
 		}
-
 	}
 
 	@FXML
