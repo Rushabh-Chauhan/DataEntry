@@ -1,7 +1,7 @@
-//package data;
-//
-//public class Dealer {
-//	
+package data;
+
+public class Dealer {
+	
 //	private String name;
 //	private String phone;
 //	private String lastAmountPaid;
@@ -14,7 +14,7 @@
 //		this.lastAmountPaid = lastAmountPaid;
 //		this.amountPending = amountPending;
 //		this.totalAmountPaid = 0;
-//	}
-//	
-//
-//}
+	
+	
+
+}
