@@ -117,7 +117,7 @@ public class SalaryTableController implements Initializable {
 			while(rs.next())
 			{
 				String paymentid = rs.getString("payment_id");
-				String name = rs.getString("Name");
+				String id = rs.getString("ID");
 				Date date = rs.getDate("Date");
 				String commission = rs.getString("commission");
 				String salary = rs.getString("Salary");
@@ -125,7 +125,7 @@ public class SalaryTableController implements Initializable {
 				String total = rs.getString("Total");
 				String des = rs.getString("description");
 
-				this.salaryOList.add(new Salary(paymentid,name,date,salary,commission,deduction,total,des));
+				this.salaryOList.add(new Salary(paymentid,id,date,salary,commission,deduction,total,des));
 
 			}
 		} catch (SQLException e) {
