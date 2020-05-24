@@ -2,7 +2,6 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,6 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 import data.Employ;
-import data.Salary;
 
 public class DatabaseHandler {
 
@@ -29,6 +27,7 @@ public class DatabaseHandler {
 		CreatConnection();
 		creatEmployTable();
 		creatSalaryTable();
+		creatDeletedEmployTable();
 	}
 
 	public static DatabaseHandler getHandler()
@@ -75,12 +74,12 @@ public class DatabaseHandler {
 			System.out.print("Exception in executeAction:DatabaseHandler......."+e.getLocalizedMessage());
 			return false;
 		}
-
 	}
 
 	public boolean deleteEmploy(Employ employ)
 	{
 		try {
+			copyEmployRow(employ);
 			String deletestatement = "delete from Employtable where id = ?;";
 			PreparedStatement stm = con.prepareStatement(deletestatement);
 			stm.setString(1, employ.id);
@@ -92,10 +91,21 @@ public class DatabaseHandler {
 		}
 		return false;
 	}
+	// just to use in delete employ creating a copy in deleted table.
+	private void copyEmployRow(Employ employ)
+	{
+		String sql = "INSERT INTO Deletedemploytable VALUES("
+				+"'"+employ.id+"',"
+				+"'"+employ.name+"',"
+				+"'"+employ.address+"',"
+				+"'"+employ.phone+"',"
+				+"'"+employ.salary+"',"
+				+"'"+employ.description+"');";
+		this.executeAction(sql);
+	}
 
 	public boolean updateEmploy(Employ employ)
 	{
-
 		try {
 					
 			String update = "UPDATE employtable SET Name = ?, Address = ?,Phone = ?,Salary = ?,description = ? WHERE ID = ?;";
@@ -114,13 +124,34 @@ public class DatabaseHandler {
 			System.out.print("problem in DatabaseHandler/updateEmploy....."+e.getLocalizedMessage());
 			return false;
 		}
-
-		
 	}
 
 	public void creatEmployTable()throws Exception
 	{
 		String tableName = "employtable";
+		stat = con.createStatement();
+		DatabaseMetaData dbm = con.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
+		if(tables.next())
+		{
+			//System.out.println("Table "+ tableName+" already exists. ready to go!");
+		}
+		else
+		{
+			stat.execute("CREATE TABLE `"+ tableName +"`("
+					+"`ID` varchar(50),"
+					+"`Name` varchar(50),"
+					+"`Address` TEXT(60000),"
+					+"`Phone` varchar(50),"
+					+"`Salary` varchar(50),"
+					+ "`description` TEXT(6000),"
+					+ "PRIMARY KEY (`ID`));");
+		}
+	}
+	
+	public void creatDeletedEmployTable()throws Exception
+	{
+		String tableName = "Deletedemploytable";
 		stat = con.createStatement();
 		DatabaseMetaData dbm = con.getMetaData();
 		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
@@ -155,7 +186,7 @@ public class DatabaseHandler {
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
 					+"`payment_id` varchar(700),"
-					+"`Name` varchar(50),"
+					+"`ID` varchar(50),"
 					+"`Date` DATE,"
 					+"`salary` varchar(50),"
 					+"`commission` varchar(50),"
@@ -164,9 +195,6 @@ public class DatabaseHandler {
 					+ "`description` TEXT(6000),"
 					+ "PRIMARY KEY (`payment_id`));");
 		}
-
-
-
 	}
 }
 

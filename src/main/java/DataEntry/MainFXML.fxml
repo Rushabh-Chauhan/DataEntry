@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -22,7 +23,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#deletedItems" text="Deleted Items" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="New">
@@ -47,7 +48,7 @@
               <content>
                 <AnchorPane>
                      <children>
-                        <JFXTreeTableView fx:id="employTreeView" currentItemsCount="5" editable="true" prefHeight="532.0" prefWidth="871.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <JFXTreeTableView fx:id="employTreeView" currentItemsCount="5" editable="true" onMouseClicked="#editemploy" prefHeight="532.0" prefWidth="871.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <opaqueInsets>
                               <Insets left="5.0" />
                            </opaqueInsets>
@@ -66,10 +67,7 @@
             </Tab>
             <Tab text="Salary Table">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <JFXTreeTableView fx:id="salaryTreeView" />
-                     </children></AnchorPane>
+                  <AnchorPane />
               </content>
             </Tab>
          </tabs>

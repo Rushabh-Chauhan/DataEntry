@@ -109,7 +109,7 @@ public class GiveSalaryController implements Initializable {
 
 		String sql = "INSERT INTO SALARYTABLE VALUES("
 				+"'"+this.payment.getText()+"',"
-				+"'"+this.employ.name+"',"
+				+"'"+this.employ.id+"',"
 				+"'"+this.date.getValue()+"',"
 				+"'"+this.salary.getText()+"',"
 				+"'"+this.commision.getText()+"',"

@@ -3,7 +3,6 @@ package data;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
@@ -23,10 +22,43 @@ public class Salary extends RecursiveTreeObject<Salary>{
 	public String paymentID;
 	//public  ObservableList<Salary> salaryOList;
 
-	public Salary(String payment_id,String name, Date date, String salary, String Commision, String Deduction,String total, String des)
+	public Salary(String payment_id,String id, Date date, String salary, String Commision, String Deduction,String total, String des)
 	{
 		// converting id to name using database.
-		this.name = name;
+		String sql = "SELECT * FROM EMPLOYTABLE";
+		DatabaseHandler database = DatabaseHandler.getHandler();
+		ResultSet rs = database.executeQueri(sql);
+		try {
+			while(rs.next())
+			{
+				if(rs.getString("ID").equals(id))
+				{
+					this.name = rs.getString("Name");
+				}
+			}
+		} catch (SQLException e) {
+			e.getLocalizedMessage();
+		}
+		
+		// checks in deleted employ data if name is not in main employ data.
+		if(name == null)
+		{
+			sql = "SELECT * FROM DELETEDEMPLOYTABLE";
+			rs = database.executeQueri(sql);
+			try {
+				while(rs.next())
+				{
+					if(rs.getString("ID").equals(id))
+					{
+						this.name = rs.getString("Name");
+					}
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.out.print("error...."+e1.getLocalizedMessage());
+			}
+		}
 		this.date = date;
 		this.salary = Double.parseDouble(salary);
 		this.commission = Double.parseDouble(Commision);

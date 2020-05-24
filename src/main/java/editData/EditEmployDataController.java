@@ -31,7 +31,7 @@ public class EditEmployDataController implements Initializable{
 	private JFXTextField phone;
 
 	@FXML
-	private JFXButton editButton;
+	public JFXButton editButton;
 
 	@FXML
 	private JFXTextField name;
