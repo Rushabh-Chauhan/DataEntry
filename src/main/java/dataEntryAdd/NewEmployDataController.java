@@ -57,7 +57,7 @@ public class NewEmployDataController implements Initializable{
 	@FXML
 	void SaveData(ActionEvent event) {
 		// checking if any data is not empty
-		if(id.getText().isEmpty()||name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty())
+		if(id.getText().isEmpty()||name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty()|| id.getText().equals("Adhar Number"))
 		{
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);

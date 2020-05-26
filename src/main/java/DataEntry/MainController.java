@@ -23,7 +23,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -36,6 +35,7 @@ public class MainController implements Initializable {
 
 
 	private  ObservableList<Employ> employOList;
+
 	public static ObservableList<Salary> salaryOList;
 
 	@FXML
@@ -51,7 +51,7 @@ public class MainController implements Initializable {
 	private BorderPane boderPane;
 
 	@FXML
-	private RadioMenuItem hide;
+	private JFXTreeTableView<?> dealerTreeTable;
 
 	private static Employ rEmploy;
 
@@ -67,9 +67,7 @@ public class MainController implements Initializable {
 		} catch (Exception e) {
 			System.out.print("problem in loading database in maincontroller....."+e.getLocalizedMessage());
 		}
-
 		employOList = FXCollections.observableArrayList();
-		//this.EmployTreeColomns();
 		Employ.EmployTreeColomns(employTreeView, employOList);
 		this.loadEmployTable(); 
 	}
@@ -133,6 +131,16 @@ public class MainController implements Initializable {
 	@FXML
 	void giveSalary(ActionEvent event) throws IOException {
 
+		TreeItem<Employ> selected = employTreeView.getSelectionModel().getSelectedItem();
+		if(selected == null)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("Please Select The Employ To Delete");
+			alert.showAndWait();
+			return;
+		}
+
 		rEmploy = employTreeView.getSelectionModel().getSelectedItem().getValue();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/GiveSalaryFXML.fxml"));
 		Parent root = loader.load();
@@ -149,6 +157,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	void SalaryTable(ActionEvent event) {
+		rEmploy = null;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/SalaryTableFXML.fxml"));
 		Parent root = null;
 		try {
@@ -166,10 +175,42 @@ public class MainController implements Initializable {
 			System.out.println("problem in loading salary table...."+e.getLocalizedMessage());
 		}
 	}
-	
+
+	@FXML
+	void employSalaryTable(ActionEvent event) {
+		TreeItem<Employ> selected = employTreeView.getSelectionModel().getSelectedItem();
+		if(selected == null)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("Please Select The Employ To Delete");
+			alert.showAndWait();
+			return;
+		}
+
+		TreeItem<Employ> dat = employTreeView.getSelectionModel().getSelectedItem();
+		rEmploy = dat.getValue();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Moneycontrollers/SalaryTableFXML.fxml"));
+		Parent root = null;
+		try {
+			root = loader.load();
+			Stage stage = new Stage();
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			//stage.initStyle(StageStyle.TRANSPARENT);
+			stage.setTitle("Salary Table");
+			stage.showAndWait(); 
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("problem in loading salary table...."+e.getLocalizedMessage());
+		}
+	}
+
+
 	// opens a new tab shows all the deleted items. 
 	@FXML
-    void deletedItems(ActionEvent event) {
+	void deletedItems(ActionEvent event) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/deletedItems/DeletedEmployFXML.fxml"));
 		Parent root = null;
 		try {
@@ -186,121 +227,35 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 			System.out.println("problem in loading DeletedEmployFXML...."+e.getLocalizedMessage());
 		}
+	}
 
-    }
-	
-	  @FXML
-	    void editemploy(MouseEvent e) {
-		  if (e.getClickCount() == 2 && employTreeView.getSelectionModel().getSelectedItem() != null)
-				{
-					TreeItem<Employ> dat = employTreeView.getSelectionModel().getSelectedItem();
-					rEmploy = dat.getValue();	
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("/editData/EditEmployDataFXML.fxml"));
-					Parent root = null;
-					try {
-						root = loader.load();
-						Stage stage = new Stage();
-						Scene scene = new Scene(root);
-						stage.setScene(scene);
-						stage.initModality(Modality.APPLICATION_MODAL);
-						//stage.initStyle(StageStyle.TRANSPARENT);
-						stage.setResizable(false);
-						stage.setTitle(dat.getValue().name);
-						stage.showAndWait(); 
-					} catch (IOException e1) {
-						System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
-					}			
-					employTreeView.getSelectionModel().clearSelection();
-					//Refreshes the table. 
-					this.employOList.clear();
-					this.loadEmployTable();
-				}
-
-	    }
-
-	
-
-//	private void EmployTreeColomns()
-//	{
-//		JFXTreeTableColumn<Employ, String> name = new JFXTreeTableColumn<>("Name");
-//		name.setPrefWidth(460);
-//		name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
-//			@Override
-//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
-//				return param.getValue().getValue().getName();
-//			}
-//		});
-//		JFXTreeTableColumn<Employ, String> address = new JFXTreeTableColumn<>("Address");
-//		address.setPrefWidth(520);
-//		address.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
-//			@Override
-//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
-//				return param.getValue().getValue().getAddress();
-//			}
-//		});
-//		JFXTreeTableColumn<Employ, String> phone = new JFXTreeTableColumn<>("Phone Number");
-//		phone.setPrefWidth(460);
-//		phone.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
-//			@Override
-//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
-//				return param.getValue().getValue().getPhone();
-//			}
-//		});
-//		JFXTreeTableColumn<Employ, String> salary = new JFXTreeTableColumn<>("Salary");
-//		salary.setPrefWidth(460);
-//		salary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
-//			@Override
-//			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
-//				return param.getValue().getValue().getSalary();
-//			}
-//		});
-//
-//		//this.employOList.add(new Employ("rushabh","rushabh","7458","5000","45edfdf84"));
-//
-//		employEditScreen();
-//
-//		TreeItem<Employ> root = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
-//		root.setExpanded(true);
-//		employTreeView.getColumns().setAll(name,address,phone,salary);
-//		employTreeView.setRoot(root);
-//		employTreeView.setShowRoot(false);
-//		employTreeView.setEditable(true);
-//
-//
-//	}
-//
-//	// edit and save screen properties.
-//	private  void employEditScreen()
-//	{
-//		employTreeView.setOnMouseClicked(e->{
-//			if (e.getClickCount() == 2 && employTreeView.getSelectionModel().getSelectedItem() != null)
-//			{
-//				TreeItem<Employ> dat = employTreeView.getSelectionModel().getSelectedItem();
-//				rEmploy = dat.getValue();	
-//				FXMLLoader loader = new FXMLLoader(getClass().getResource("/editData/EditEmployDataFXML.fxml"));
-//				Parent root = null;
-//				try {
-//					root = loader.load();
-//					Stage stage = new Stage();
-//					Scene scene = new Scene(root);
-//					stage.setScene(scene);
-//					stage.initModality(Modality.APPLICATION_MODAL);
-//					//stage.initStyle(StageStyle.TRANSPARENT);
-//					stage.setResizable(false);
-//					stage.setTitle(dat.getValue().name);
-//					stage.showAndWait(); 
-//				} catch (IOException e1) {
-//					System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
-//				}			
-//				employTreeView.getSelectionModel().clearSelection();
-//				//Refreshes the table. 
-//				this.employOList.clear();
-//				this.loadEmployTable();
-//			}
-//		});
-//
-//	}
-
+	@FXML
+	void editemploy(MouseEvent e) {
+		if (e.getClickCount() == 2 && employTreeView.getSelectionModel().getSelectedItem() != null)
+		{
+			TreeItem<Employ> dat = employTreeView.getSelectionModel().getSelectedItem();
+			rEmploy = dat.getValue();	
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/editData/EditEmployDataFXML.fxml"));
+			Parent root = null;
+			try {
+				root = loader.load();
+				Stage stage = new Stage();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.initModality(Modality.APPLICATION_MODAL);
+				//stage.initStyle(StageStyle.TRANSPARENT);
+				stage.setResizable(false);
+				stage.setTitle(dat.getValue().name);
+				stage.showAndWait(); 
+			} catch (IOException e1) {
+				System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
+			}			
+			employTreeView.getSelectionModel().clearSelection();
+			//Refreshes the table. 
+			this.employOList.clear();
+			this.loadEmployTable();
+		}
+	}
 
 	private void loadEmployTable()
 	{

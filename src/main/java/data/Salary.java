@@ -4,11 +4,19 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import database.DatabaseHandler;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.util.Callback;
 
 public class Salary extends RecursiveTreeObject<Salary>{
 
@@ -99,6 +107,72 @@ public class Salary extends RecursiveTreeObject<Salary>{
 	}
 	public StringProperty getSalay() {
 		return new SimpleStringProperty(this.salary+"");
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static void salaryTable(JFXTreeTableView<Salary> salaryTableView,ObservableList<Salary> salaryOList)
+	{
+		JFXTreeTableColumn<Salary, String> date = new JFXTreeTableColumn<>("Date");
+		date.setPrefWidth(250);
+		date.setContextMenu(null);
+		date.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+				return param.getValue().getValue().getDate();
+			}
+		});
+		JFXTreeTableColumn<Salary, String> salary = new JFXTreeTableColumn<>("Salary");
+		salary.setPrefWidth(250);
+		salary.setContextMenu(null);
+		salary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+				return param.getValue().getValue().getSalay();
+			}
+		});
+		JFXTreeTableColumn<Salary, String> commision = new JFXTreeTableColumn<>("Commision");
+		commision.setPrefWidth(250);
+		commision.setContextMenu(null);
+		commision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+				return param.getValue().getValue().getCommision();
+			}
+		});
+		JFXTreeTableColumn<Salary, String> deduction = new JFXTreeTableColumn<>("Deduction");
+		deduction.setPrefWidth(250);
+		deduction.setContextMenu(null);
+		deduction.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+				return param.getValue().getValue().getDeduction();
+			}
+		});
+		JFXTreeTableColumn<Salary, String> total = new JFXTreeTableColumn<>("Total");
+		total.setPrefWidth(250);
+		total.setContextMenu(null);
+		total.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+				return param.getValue().getValue().gettotal();
+			}
+		});
+		JFXTreeTableColumn<Salary, String> id = new JFXTreeTableColumn<>("Payment ID");
+		id.setPrefWidth(300);
+		id.setContextMenu(null);
+		id.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
+				return param.getValue().getValue().getPaymentID();
+			}
+		});
+		TreeItem<Salary> root = new RecursiveTreeItem<Salary>(salaryOList, RecursiveTreeObject::getChildren);
+		root.setExpanded(true);
+		salaryTableView.getColumns().addAll(date,salary,commision,deduction,total,id);
+		salaryTableView.setRoot(root);
+		salaryTableView.setShowRoot(false);
+		salaryTableView.setEditable(true); 
 	}
 
 

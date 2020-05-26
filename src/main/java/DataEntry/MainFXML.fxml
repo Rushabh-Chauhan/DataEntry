@@ -57,6 +57,7 @@
                                 <items>
                                   <MenuItem mnemonicParsing="false" onAction="#giveSalary" text="Give Salary" />
                                     <MenuItem mnemonicParsing="false" onAction="#deleteEmploy" text="Delete" />
+                                    <MenuItem mnemonicParsing="false" onAction="#employSalaryTable" text="Salary Table" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>
@@ -67,8 +68,16 @@
             </Tab>
             <Tab text="Salary Table">
               <content>
-                  <AnchorPane />
+                  <AnchorPane>
+                     <children>
+                        <JFXTreeTableView fx:id="dealerTreeTable" />
+                     </children></AnchorPane>
               </content>
+            </Tab>
+            <Tab text="Salary Table">
+               <content>
+                  <AnchorPane />
+               </content>
             </Tab>
          </tabs>
       </JFXTabPane>
