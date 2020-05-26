@@ -1,22 +1,30 @@
 package data;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Dealer {
 
 	private String companyname;
 	private String phone;
-	private String lastAmountPaid;
-	private String amountPending;
-	private int totalAmountPaid;
+	public BankDetails bank;
 
-	public Dealer(String companyname, String phone, String lastAmountPaid, String amountPending) {
+	public Dealer(String companyname, String phone, String lastAmountPaid, String amountPending,BankDetails bank) {
 
 		this.companyname = companyname;
 		this.phone = phone;
-		this.lastAmountPaid = lastAmountPaid;
-		this.amountPending = amountPending;
-		this.totalAmountPaid = 0;
-
+		this.bank = bank;
 	}
+	
+	public StringProperty getCompanyName() {
+		return new SimpleStringProperty(this.companyname);
+	}
+	public StringProperty getPhone() {
+		return new SimpleStringProperty(this.phone);
+	}
+//	public StringProperty get() {
+//		return new SimpleStringProperty(this.companyname);
+//	}
 
 
 

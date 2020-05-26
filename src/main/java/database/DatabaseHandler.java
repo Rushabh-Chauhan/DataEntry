@@ -76,11 +76,18 @@ public class DatabaseHandler {
 		}
 	}
 
-	public boolean deleteEmploy(Employ employ)
+	public boolean deleteEmploy(Employ employ, String table)
 	{
 		try {
-			copyEmployRow(employ);
-			String deletestatement = "delete from Employtable where id = ?;";
+			if(table.equals("Deletedemploytable"))
+			{
+				copyEmployRow(employ,"employtable");
+			}
+			else
+			{
+				copyEmployRow(employ,"Deletedemploytable");
+			}
+			String deletestatement = "delete from "+table+" where id = ?;";
 			PreparedStatement stm = con.prepareStatement(deletestatement);
 			stm.setString(1, employ.id);
 			stm.executeUpdate();
@@ -92,9 +99,9 @@ public class DatabaseHandler {
 		return false;
 	}
 	// just to use in delete employ creating a copy in deleted table.
-	private void copyEmployRow(Employ employ)
+	private void copyEmployRow(Employ employ, String table)
 	{
-		String sql = "INSERT INTO Deletedemploytable VALUES("
+		String sql = "INSERT INTO "+table+" VALUES("
 				+"'"+employ.id+"',"
 				+"'"+employ.name+"',"
 				+"'"+employ.address+"',"

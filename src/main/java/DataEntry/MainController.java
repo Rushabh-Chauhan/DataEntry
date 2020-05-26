@@ -107,7 +107,7 @@ public class MainController implements Initializable {
 		Optional<ButtonType> ans = alert.showAndWait();
 		if(ans.get() == ButtonType.OK)
 		{
-			boolean result = database.deleteEmploy(selected.getValue());
+			boolean result = database.deleteEmploy(selected.getValue(),"employtable");
 			if(result)
 			{
 				// Refreshes the list after the deletion; 
@@ -222,7 +222,9 @@ public class MainController implements Initializable {
 			//stage.initStyle(StageStyle.TRANSPARENT);
 			stage.setTitle("Salary Table");
 			stage.setMaximized(true);
-			stage.showAndWait(); 
+			stage.showAndWait();
+			this.employOList.clear();
+			loadEmployTable();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("problem in loading DeletedEmployFXML...."+e.getLocalizedMessage());
