@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
+import data.Dealer;
 import data.Employ;
 
 public class DatabaseHandler {
@@ -28,6 +29,7 @@ public class DatabaseHandler {
 		creatEmployTable();
 		creatSalaryTable();
 		creatDeletedEmployTable();
+		creatDealerTable();
 	}
 
 	public static DatabaseHandler getHandler()
@@ -132,6 +134,36 @@ public class DatabaseHandler {
 			return false;
 		}
 	}
+	
+	
+	public boolean updateDealer(Dealer dealer, String oldAccountNumber)
+	{
+		try {
+					
+			String update = "UPDATE dealertable SET Company_Name = ?, phone = ?,Bank_Name = ?,Account_Number = ?,IFC_code = ?,Bank_Address = ?,Policy = ? WHERE Account_Number = ?;";
+			PreparedStatement stmt = con.prepareStatement(update);
+			stmt.setString(1, dealer.companyname);
+			stmt.setString(2, dealer.phone);
+			stmt.setString(3, dealer.bank.bankName);
+			stmt.setString(4, dealer.bank.accountNumber);
+			stmt.setString(5, dealer.bank.IFCCode);
+			stmt.setString(6, dealer.bank.address);
+			stmt.setString(7, dealer.policy);
+			stmt.setString(8, oldAccountNumber);
+			int result = stmt.executeUpdate();	
+			
+			return (result >0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.print("problem in DatabaseHandler/updateDealer....."+e.getLocalizedMessage());
+			return false;
+		}
+	}
+	
+	
+	
+	
+	
 
 	public void creatEmployTable()throws Exception
 	{
@@ -139,11 +171,7 @@ public class DatabaseHandler {
 		stat = con.createStatement();
 		DatabaseMetaData dbm = con.getMetaData();
 		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
-		if(tables.next())
-		{
-			//System.out.println("Table "+ tableName+" already exists. ready to go!");
-		}
-		else
+		if(!tables.next())
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
 					+"`ID` varchar(50),"
@@ -162,11 +190,7 @@ public class DatabaseHandler {
 		stat = con.createStatement();
 		DatabaseMetaData dbm = con.getMetaData();
 		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
-		if(tables.next())
-		{
-			//System.out.println("Table "+ tableName+" already exists. ready to go!");
-		}
-		else
+		if(!tables.next())
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
 					+"`ID` varchar(50),"
@@ -185,11 +209,7 @@ public class DatabaseHandler {
 		stat = con.createStatement();
 		DatabaseMetaData dbm = con.getMetaData();
 		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
-		if(tables.next())
-		{
-			//System.out.println("Table "+ tableName+" already exists. ready to go!");
-		}
-		else
+		if(!tables.next())
 		{
 			stat.execute("CREATE TABLE `"+ tableName +"`("
 					+"`payment_id` varchar(700),"
@@ -201,6 +221,28 @@ public class DatabaseHandler {
 					+"`Total` varchar(50),"
 					+ "`description` TEXT(6000),"
 					+ "PRIMARY KEY (`payment_id`));");
+		}
+	}
+	
+	
+	
+	public void creatDealerTable()throws Exception
+	{
+		String tableName = "dealertable";
+		stat = con.createStatement();
+		DatabaseMetaData dbm = con.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
+		if(!tables.next())
+		{
+			stat.execute("CREATE TABLE `"+ tableName +"`("
+					+"`Company_Name` varchar(50),"
+					+"`phone` varchar(50),"
+					+"`Bank_Name` varchar(50),"
+					+"`Account_Number` varchar(50),"
+					+"`IFC_code` varchar(50),"
+					+"`Bank_Address` varchar(50),"
+					+"`Policy` TEXT(6000),"
+					+ "PRIMARY KEY (`Account_Number`));");
 		}
 	}
 }

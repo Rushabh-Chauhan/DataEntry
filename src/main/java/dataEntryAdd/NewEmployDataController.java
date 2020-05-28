@@ -88,7 +88,7 @@ public class NewEmployDataController implements Initializable{
 			if(this.database.executeAction(sql))
 			{
 				//Refreshing the table;
-				newEmploy = new Employ(id.getText(),name.getText(),address.getText(),phone.getText(),salary.getText(),description.getText());
+				//newEmploy = new Employ(id.getText(),name.getText(),address.getText(),phone.getText(),salary.getText(),description.getText());
 				Stage stage = (Stage) this.pane.getScene().getWindow();
 				stage.close();
 				return;
