@@ -1,8 +1,10 @@
 package deletedItems;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -15,8 +17,11 @@ import database.DatabaseHandler;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
@@ -32,11 +37,14 @@ public class DeletedEmployController implements Initializable{
     
     private  ObservableList<Employ> employOList;
     
+    private DatabaseHandler database;
+    
     
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) 
 	{
+		this.database = DatabaseHandler.getHandler();
     	employOList = FXCollections.observableArrayList();
     	Employ.EmployTreeColomns(employTreeView, employOList);
     	
@@ -54,6 +62,45 @@ public class DeletedEmployController implements Initializable{
 		employTreeView.setRoot(root);
     	loadEmployTable();
 	}
+	
+	  @FXML
+	    void restore(ActionEvent event) {
+		  TreeItem<Employ> selected = employTreeView.getSelectionModel().getSelectedItem();
+			if(selected == null)
+			{
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setHeaderText(null);
+				alert.setContentText("Please Select The Employ To restore");
+				alert.showAndWait();
+				return;
+			}
+
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setHeaderText("Delete Employ");
+			alert.setContentText("Are you sure do you want to restore "+selected.getValue().name);
+			Optional<ButtonType> ans = alert.showAndWait();
+			if(ans.get() == ButtonType.OK)
+			{
+				boolean result = database.deleteEmploy(selected.getValue(),"Deletedemploytable");
+				if(result)
+				{
+					// Refreshes the list after the deletion; 
+					this.employOList.clear();
+					this.loadEmployTable();
+
+				}
+				else// error when not restoring
+				{
+					Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+					alert1.setHeaderText(null);
+					alert1.setContentText("Deletion failed. Try again");
+					alert1.showAndWait();
+					return;
+				}
+			}
+			return;
+
+	    }
 	
 	private void loadEmployTable()
 	{

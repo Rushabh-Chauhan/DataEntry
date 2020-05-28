@@ -92,6 +92,7 @@ public class Employ extends RecursiveTreeObject<Employ>{
 	{
 		JFXTreeTableColumn<Employ, String> name = new JFXTreeTableColumn<>("Name");
 		name.setPrefWidth(460);
+		name.setContextMenu(null);
 		name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -100,6 +101,7 @@ public class Employ extends RecursiveTreeObject<Employ>{
 		});
 		JFXTreeTableColumn<Employ, String> address = new JFXTreeTableColumn<>("Address");
 		address.setPrefWidth(520);
+		address.setContextMenu(null);
 		address.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -108,6 +110,7 @@ public class Employ extends RecursiveTreeObject<Employ>{
 		});
 		JFXTreeTableColumn<Employ, String> phone = new JFXTreeTableColumn<>("Phone Number");
 		phone.setPrefWidth(460);
+		phone.setContextMenu(null);
 		phone.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
@@ -116,6 +119,7 @@ public class Employ extends RecursiveTreeObject<Employ>{
 		});
 		JFXTreeTableColumn<Employ, String> salary = new JFXTreeTableColumn<>("Salary");
 		salary.setPrefWidth(460);
+		salary.setContextMenu(null);
 		salary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {

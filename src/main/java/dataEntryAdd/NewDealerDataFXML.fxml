@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="825.0" prefWidth="1091.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataEntryAdd.NewDealerDataController">
+   <children>
+      <JFXTextField fx:id="companyName" labelFloat="true" layoutX="34.0" layoutY="62.0" prefHeight="35.0" prefWidth="411.0" promptText="Company Name">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="phone" labelFloat="true" layoutX="744.0" layoutY="69.0" prefHeight="35.0" prefWidth="155.0" promptText="Phone Number" text="+91 ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <Label layoutX="473.0" layoutY="177.0" text="Bank Details" underline="true">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="bankName" labelFloat="true" layoutX="34.0" layoutY="269.0" prefHeight="39.0" prefWidth="227.0" promptText="Bank Name">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="accountNumber" labelFloat="true" layoutX="426.0" layoutY="269.0" prefHeight="39.0" prefWidth="250.0" promptText="Account Number">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="IFCCode" labelFloat="true" layoutX="865.0" layoutY="269.0" promptText="IFC Code">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="bankAddress" labelFloat="true" layoutX="34.0" layoutY="363.0" prefHeight="50.0" prefWidth="1033.0" promptText="Branch Address" />
+      <JFXTextArea fx:id="policy" layoutX="34.0" layoutY="462.0" prefHeight="274.0" prefWidth="1033.0" promptText="Policy (optional)" />
+      <Button defaultButton="true" layoutX="473.0" layoutY="749.0" mnemonicParsing="false" onAction="#save" prefHeight="69.0" prefWidth="146.0" text="Save" />
+   </children>
+</AnchorPane>

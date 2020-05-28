@@ -57,7 +57,7 @@ public class NewEmployDataController implements Initializable{
 	@FXML
 	void SaveData(ActionEvent event) {
 		// checking if any data is not empty
-		if(id.getText().isEmpty()||name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty())
+		if(id.getText().isEmpty()||name.getText().isEmpty()|| address.getText().isEmpty()|| phone.getText().isEmpty()||salary.getText().isEmpty()|| id.getText().equals("Adhar Number"))
 		{
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setHeaderText(null);
@@ -88,7 +88,7 @@ public class NewEmployDataController implements Initializable{
 			if(this.database.executeAction(sql))
 			{
 				//Refreshing the table;
-				newEmploy = new Employ(id.getText(),name.getText(),address.getText(),phone.getText(),salary.getText(),description.getText());
+				//newEmploy = new Employ(id.getText(),name.getText(),address.getText(),phone.getText(),salary.getText(),description.getText());
 				Stage stage = (Stage) this.pane.getScene().getWindow();
 				stage.close();
 				return;

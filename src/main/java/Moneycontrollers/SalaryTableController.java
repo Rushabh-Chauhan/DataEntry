@@ -11,6 +11,8 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
+import DataEntry.MainController;
+import data.Employ;
 import data.Salary;
 import database.DatabaseHandler;
 import javafx.beans.value.ObservableValue;
@@ -24,113 +26,67 @@ import javafx.util.Callback;
 
 public class SalaryTableController implements Initializable {
 
-    @FXML
-    private JFXTreeTableView<Salary> salaryTableView;
-    
-    public ObservableList<Salary> salaryOList;
-    
-    private DatabaseHandler database;
-    
-    @Override
+	@FXML
+	private JFXTreeTableView<Salary> salaryTableView;
+
+	public ObservableList<Salary> salaryOList;
+
+	private DatabaseHandler database;
+
+	private Employ employ;
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public void initialize(URL url, ResourceBundle rb) 
 	{    	
-    	database = DatabaseHandler.getHandler();
-    	this.salaryOList = FXCollections.observableArrayList();
-    	this.salarytable();
-    	this.loadEmployTable();
-	}
-    
-    
-	@SuppressWarnings("unchecked")
-	private void salarytable()
-	{
+		this.employ = MainController.getSelectedEmploy();  	
+		database = DatabaseHandler.getHandler();
+		this.salaryOList = FXCollections.observableArrayList();
 		JFXTreeTableColumn<Salary, String> name = new JFXTreeTableColumn<>("Name");
 		name.setPrefWidth(300);
+		name.setContextMenu(null);
 		name.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
 				return param.getValue().getValue().getName();
 			}
 		});
-		JFXTreeTableColumn<Salary, String> date = new JFXTreeTableColumn<>("Date");
-		date.setPrefWidth(250);
-		date.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
-				return param.getValue().getValue().getDate();
-			}
-		});
-		JFXTreeTableColumn<Salary, String> salary = new JFXTreeTableColumn<>("Salary");
-		salary.setPrefWidth(250);
-		salary.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
-				return param.getValue().getValue().getSalay();
-			}
-		});
-		JFXTreeTableColumn<Salary, String> commision = new JFXTreeTableColumn<>("Commision");
-		commision.setPrefWidth(250);
-		commision.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
-				return param.getValue().getValue().getCommision();
-			}
-		});
-		JFXTreeTableColumn<Salary, String> deduction = new JFXTreeTableColumn<>("Deduction");
-		deduction.setPrefWidth(250);
-		deduction.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
-				return param.getValue().getValue().getDeduction();
-			}
-		});
-		JFXTreeTableColumn<Salary, String> total = new JFXTreeTableColumn<>("Total");
-		total.setPrefWidth(250);
-		total.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
-				return param.getValue().getValue().gettotal();
-			}
-		});
-		JFXTreeTableColumn<Salary, String> id = new JFXTreeTableColumn<>("Payment ID");
-		id.setPrefWidth(300);
-		id.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Salary, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Salary, String> param) {
-				return param.getValue().getValue().getPaymentID();
-			}
-		});
-		
-		
-		TreeItem<Salary> root = new RecursiveTreeItem<Salary>(salaryOList, RecursiveTreeObject::getChildren);
-		root.setExpanded(true);
-		salaryTableView.getColumns().setAll(name,date,salary,commision,deduction,total,id);
-		salaryTableView.setRoot(root);
-		salaryTableView.setShowRoot(false);
-		salaryTableView.setEditable(true); 
+		salaryTableView.getColumns().setAll(name);
+
+		Salary.salaryTable(this.salaryTableView,this.salaryOList);
+		this.loadSalaryTable();
 	}
-	private void loadEmployTable()
+
+	private void loadSalaryTable()
 	{
+		boolean check = true;
+		if(employ != null)
+		{
+			check = false;
+		}
+
 		String sql = "SELECT * FROM SALARYTABLE";
 		ResultSet rs = database.executeQueri(sql);
 		try {
 			while(rs.next())
 			{
-				String paymentid = rs.getString("payment_id");
-				String id = rs.getString("ID");
-				Date date = rs.getDate("Date");
-				String commission = rs.getString("commission");
-				String salary = rs.getString("Salary");
-				String deduction = rs.getString("deduction");
-				String total = rs.getString("Total");
-				String des = rs.getString("description");
-
-				this.salaryOList.add(new Salary(paymentid,id,date,salary,commission,deduction,total,des));
-
+				if(check || rs.getString("ID").equals(employ.id))
+				{
+					String paymentid = rs.getString("payment_id");
+					String id = rs.getString("ID");
+					Date date = rs.getDate("Date");
+					String commission = rs.getString("commission");
+					String salary = rs.getString("Salary");
+					String deduction = rs.getString("deduction");
+					String total = rs.getString("Total");
+					String des = rs.getString("description");
+					this.salaryOList.add(new Salary(paymentid,id,date,salary,commission,deduction,total,des));
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.print("Error in loading table"+e.getLocalizedMessage());
+			
 		}
 	}
 
