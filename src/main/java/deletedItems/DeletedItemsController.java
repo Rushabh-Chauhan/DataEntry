@@ -12,6 +12,8 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
+import data.BankDetails;
+import data.Dealer;
 import data.Employ;
 import database.DatabaseHandler;
 import javafx.beans.value.ObservableValue;
@@ -27,15 +29,20 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
-public class DeletedEmployController implements Initializable{
+public class DeletedItemsController implements Initializable{
 
     @FXML
     private JFXTreeTableView<Employ> employTreeView;
+    
+    @FXML
+    private JFXTreeTableView<Dealer> dealerTreeTable;
 
     @FXML
     private AnchorPane pane;
     
     private  ObservableList<Employ> employOList;
+    
+    private  ObservableList<Dealer> dealerOList;
     
     private DatabaseHandler database;
     
@@ -45,22 +52,13 @@ public class DeletedEmployController implements Initializable{
 	public void initialize(URL url, ResourceBundle rb) 
 	{
 		this.database = DatabaseHandler.getHandler();
-    	employOList = FXCollections.observableArrayList();
-    	Employ.EmployTreeColomns(employTreeView, employOList);
+    	this.employOList = FXCollections.observableArrayList();
+    	this.dealerOList = FXCollections.observableArrayList();
     	
-    	JFXTreeTableColumn<Employ, String> adhar_Number = new JFXTreeTableColumn<>("Adhar Number");
-    	adhar_Number.setPrefWidth(460);
-    	adhar_Number.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
-				return param.getValue().getValue().getid();
-			}
-		});
+    	this.loadEmployColumns();
+    	this.loadDealerColumns();
     	
-    	TreeItem<Employ> root = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
-		employTreeView.getColumns().add(adhar_Number);
-		employTreeView.setRoot(root);
-    	loadEmployTable();
+    	
 	}
 	
 	  @FXML
@@ -76,7 +74,7 @@ public class DeletedEmployController implements Initializable{
 			}
 
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setHeaderText("Delete Employ");
+			alert.setHeaderText("Restore Employ");
 			alert.setContentText("Are you sure do you want to restore "+selected.getValue().name);
 			Optional<ButtonType> ans = alert.showAndWait();
 			if(ans.get() == ButtonType.OK)
@@ -93,7 +91,7 @@ public class DeletedEmployController implements Initializable{
 				{
 					Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
 					alert1.setHeaderText(null);
-					alert1.setContentText("Deletion failed. Try again");
+					alert1.setContentText("restoring failed. Try again");
 					alert1.showAndWait();
 					return;
 				}
@@ -122,6 +120,58 @@ public class DeletedEmployController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void loadDealerTable()
+	{
+		String sql = "SELECT * FROM dealeteddealertable";
+		ResultSet rs = database.executeQueri(sql);
+		try {
+			while(rs.next())
+			{
+				String companyName = rs.getString("Company_Name");
+				String phone = rs.getString("phone");
+				String bankName = rs.getString("Bank_Name");
+				String accountNumber = rs.getString("Account_Number");
+				String IFCCode = rs.getString("IFC_code");
+				String bankAddress = rs.getString("Bank_Address");
+				String policy = rs.getString("Policy");
+
+				BankDetails bank = new BankDetails(bankName,accountNumber,IFCCode,bankAddress);
+				this.dealerOList.add(new Dealer(companyName,phone,policy,bank));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private void loadEmployColumns()
+	{
+		// loads the columns from the employ class.
+		Employ.EmployTreeColomns(employTreeView, employOList);
+		
+		JFXTreeTableColumn<Employ, String> adhar_Number = new JFXTreeTableColumn<>("Adhar Number");
+    	adhar_Number.setPrefWidth(460);
+    	adhar_Number.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Employ, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Employ, String> param) {
+				return param.getValue().getValue().getid();
+			}
+		});
+    	
+    	TreeItem<Employ> root = new RecursiveTreeItem<Employ>(employOList, RecursiveTreeObject::getChildren);
+		employTreeView.getColumns().add(adhar_Number);
+		employTreeView.setRoot(root);
+    	loadEmployTable();
+	}
+	
+	private void loadDealerColumns()
+	{
+		Dealer.dealerTreeColomns(dealerTreeTable, dealerOList);
+		loadDealerTable();
 	}
 
 }

@@ -34,6 +34,10 @@ public class Dealer extends RecursiveTreeObject<Dealer>{
 	public StringProperty getPhone() {
 		return new SimpleStringProperty(this.phone);
 	}
+	
+	public StringProperty getAccountNumber() {
+		return new SimpleStringProperty(this.bank.accountNumber);
+	}
 
 	@SuppressWarnings("unchecked")
 	public static void dealerTreeColomns(JFXTreeTableView<Dealer> dealerTreeView, ObservableList<Dealer> dealerOList)
@@ -54,15 +58,26 @@ public class Dealer extends RecursiveTreeObject<Dealer>{
 		phone.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Dealer, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Dealer, String> param) {
+				return param.getValue().getValue().getAccountNumber();
+			}
+			
+		});
+		
+		JFXTreeTableColumn<Dealer, String> account = new JFXTreeTableColumn<>("Account Number");
+		account.setPrefWidth(460);
+		account.setContextMenu(null);
+		account.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Dealer, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Dealer, String> param) {
 				return param.getValue().getValue().getPhone();
 			}
-		});
+	});
 		
 
 
 		TreeItem<Dealer> root = new RecursiveTreeItem<Dealer>(dealerOList, RecursiveTreeObject::getChildren);
 		root.setExpanded(true);
-		dealerTreeView.getColumns().setAll(name,phone);
+		dealerTreeView.getColumns().setAll(name,phone,account);
 		dealerTreeView.setRoot(root);
 		dealerTreeView.setShowRoot(false);
 		dealerTreeView.setEditable(true);

@@ -30,6 +30,7 @@ public class DatabaseHandler {
 		creatSalaryTable();
 		creatDeletedEmployTable();
 		creatDealerTable();
+		creatDeleteDealerTable();
 	}
 
 	public static DatabaseHandler getHandler()
@@ -112,6 +113,70 @@ public class DatabaseHandler {
 				+"'"+employ.description+"');";
 		this.executeAction(sql);
 	}
+	
+	
+	
+	public boolean deleteDealer(Dealer dealer, String table)
+	{
+		try {
+			if(table.equals("dealeteddealertable"))
+			{
+				copyDealerRow(dealer,"dealertable");
+			}
+			else
+			{
+				copyDealerRow(dealer,"dealeteddealertable");
+			}
+			String deletestatement = "delete from "+table+" where Account_Number = ?;";
+			PreparedStatement stm = con.prepareStatement(deletestatement);
+			stm.setString(1, dealer.bank.accountNumber);
+			stm.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	// just to use in delete employ creating a copy in deleted table.
+	private void copyDealerRow(Dealer dealer, String table)
+	{
+		String sql = "INSERT INTO "+table+" VALUES("
+				+"'"+dealer.companyname+"',"
+				+"'"+dealer.phone+"',"
+				+"'"+dealer.bank.bankName+"',"
+				+"'"+dealer.bank.accountNumber+"',"
+				+"'"+dealer.bank.IFCCode+"',"
+				+"'"+dealer.bank.address+"',"
+				+"'"+dealer.policy+"');";
+		this.executeAction(sql);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public boolean updateEmploy(Employ employ)
 	{
@@ -229,6 +294,26 @@ public class DatabaseHandler {
 	public void creatDealerTable()throws Exception
 	{
 		String tableName = "dealertable";
+		stat = con.createStatement();
+		DatabaseMetaData dbm = con.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
+		if(!tables.next())
+		{
+			stat.execute("CREATE TABLE `"+ tableName +"`("
+					+"`Company_Name` varchar(50),"
+					+"`phone` varchar(50),"
+					+"`Bank_Name` varchar(50),"
+					+"`Account_Number` varchar(50),"
+					+"`IFC_code` varchar(50),"
+					+"`Bank_Address` varchar(50),"
+					+"`Policy` TEXT(6000),"
+					+ "PRIMARY KEY (`Account_Number`));");
+		}
+	}
+	
+	public void creatDeleteDealerTable()throws Exception
+	{
+		String tableName = "dealeteddealertable";
 		stat = con.createStatement();
 		DatabaseMetaData dbm = con.getMetaData();
 		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);

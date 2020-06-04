@@ -38,9 +38,9 @@ public class MainController implements Initializable {
 	private  ObservableList<Employ> employOList;
 
 	public ObservableList<Salary> salaryOList;
-	
+
 	public  ObservableList<Dealer> dealerOList;
-	
+
 	@FXML
 	private JFXTreeTableView<Employ> employTreeView;
 
@@ -58,7 +58,7 @@ public class MainController implements Initializable {
 
 
 	private static Employ rEmploy;
-	
+
 	private static Dealer rDealer;
 
 	public static DatabaseHandler database;
@@ -93,7 +93,7 @@ public class MainController implements Initializable {
 		//stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setResizable(false);
 		stage.showAndWait(); 
-		
+
 		// Refreshes the employ table;
 		this.employOList.clear();
 		this.loadEmployTable();
@@ -221,7 +221,7 @@ public class MainController implements Initializable {
 	// opens a new tab shows all the deleted items. 
 	@FXML
 	void deletedItems(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/deletedItems/DeletedEmployFXML.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/deletedItems/DeletedItemsFXML.fxml"));
 		Parent root = null;
 		try {
 			root = loader.load();
@@ -268,10 +268,10 @@ public class MainController implements Initializable {
 			this.loadEmployTable();
 		}
 	}
-	
+
 	@FXML
-    void newDealerData(ActionEvent event) {
-		
+	void newDealerData(ActionEvent event) {
+
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/dataEntryAdd/NewDealerDataFXML.fxml"));
 		Parent root = null;
 		try {
@@ -291,38 +291,75 @@ public class MainController implements Initializable {
 		// Refreshes the dealer table
 		this.dealerOList.clear();
 		this.loadDealerTable();
-    }
-	
-	  @FXML
-	    void editDealer(MouseEvent e) {
-		  
-		  if (e.getClickCount() == 2 && dealerTreeView.getSelectionModel().getSelectedItem() != null)
+	}
+
+	@FXML
+	void editDealer(MouseEvent e) {
+
+		if (e.getClickCount() == 2 && dealerTreeView.getSelectionModel().getSelectedItem() != null)
+		{
+			TreeItem<Dealer> dat = dealerTreeView.getSelectionModel().getSelectedItem();
+			rDealer = dat.getValue();	
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/editData/EditDealerDataFXML.fxml"));
+			Parent root = null;
+			try {
+				root = loader.load();
+				Stage stage = new Stage();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.initModality(Modality.APPLICATION_MODAL);
+				//stage.initStyle(StageStyle.TRANSPARENT);
+				stage.setResizable(false);
+				stage.setTitle(dat.getValue().companyname);
+				stage.showAndWait(); 
+			} catch (IOException e1) {
+				System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
+			}			
+			employTreeView.getSelectionModel().clearSelection();
+			//Refreshes the table. 
+			this.dealerOList.clear();
+			this.loadDealerTable();
+		}
+	}
+
+	@FXML
+	void deleteDealer(ActionEvent event) {
+		TreeItem<Dealer> selected = dealerTreeView.getSelectionModel().getSelectedItem();
+		if(selected == null)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setContentText("Please Select The Dealer To Delete");
+			alert.showAndWait();
+			return;
+		}
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setHeaderText("Delete Dealer");
+		alert.setContentText("Are you sure do you want to delete "+selected.getValue().companyname);
+		Optional<ButtonType> ans = alert.showAndWait();
+		if(ans.get() == ButtonType.OK)
+		{
+			boolean result = database.deleteDealer(selected.getValue(),"dealertable");
+			if(result)
 			{
-				TreeItem<Dealer> dat = dealerTreeView.getSelectionModel().getSelectedItem();
-				rDealer = dat.getValue();	
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("/editData/EditDealerDataFXML.fxml"));
-				Parent root = null;
-				try {
-					root = loader.load();
-					Stage stage = new Stage();
-					Scene scene = new Scene(root);
-					stage.setScene(scene);
-					stage.initModality(Modality.APPLICATION_MODAL);
-					//stage.initStyle(StageStyle.TRANSPARENT);
-					stage.setResizable(false);
-					stage.setTitle(dat.getValue().companyname);
-					stage.showAndWait(); 
-				} catch (IOException e1) {
-					System.out.print("Error in loading the double clicked window..."+e1.getLocalizedMessage());
-				}			
-				employTreeView.getSelectionModel().clearSelection();
-				//Refreshes the table. 
+				// Refreshes the list after the deletion; 
 				this.dealerOList.clear();
 				this.loadDealerTable();
-			}
-		  
 
-	    }
+			}
+			else// error when not deleted
+			{
+				Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+				alert1.setHeaderText(null);
+				alert1.setContentText("Deletion failed. Try again");
+				alert1.showAndWait();
+				return;
+			}
+		}
+		return;
+
+	}
 
 	private void loadEmployTable()
 	{
@@ -346,7 +383,7 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void loadDealerTable()
 	{
 		String sql = "SELECT * FROM dealerTable";
@@ -371,17 +408,18 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	public static Employ getSelectedEmploy()
 	{
 		return rEmploy;
 	}
-	
+
 	public static Dealer getSelectedDealer()
 	{
 		return rDealer;
 	}
-
+	
 
 
 

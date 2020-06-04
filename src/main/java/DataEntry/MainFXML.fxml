@@ -66,11 +66,18 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab fx:id="employTreeTable" text="Employ Table">
+            <Tab fx:id="employTreeTable" text="Dealer Table">
               <content>
                   <AnchorPane>
                      <children>
-                        <JFXTreeTableView fx:id="dealerTreeView" onMouseClicked="#editDealer" opacity="0.95" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <JFXTreeTableView fx:id="dealerTreeView" editable="true" onMouseClicked="#editDealer" opacity="0.95" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem mnemonicParsing="false" onAction="#deleteDealer" text="Delete" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu></JFXTreeTableView>
                      </children></AnchorPane>
               </content>
             </Tab>
