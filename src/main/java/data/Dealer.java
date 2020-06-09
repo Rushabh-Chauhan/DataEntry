@@ -58,7 +58,7 @@ public class Dealer extends RecursiveTreeObject<Dealer>{
 		phone.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Dealer, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Dealer, String> param) {
-				return param.getValue().getValue().getAccountNumber();
+				return param.getValue().getValue().getPhone();
 			}
 			
 		});
@@ -69,7 +69,7 @@ public class Dealer extends RecursiveTreeObject<Dealer>{
 		account.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Dealer, String>, ObservableValue<String>>() {
 			@Override
 			public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Dealer, String> param) {
-				return param.getValue().getValue().getPhone();
+				return param.getValue().getValue().getAccountNumber();
 			}
 	});
 		

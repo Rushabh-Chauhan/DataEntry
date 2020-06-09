@@ -234,7 +234,9 @@ public class MainController implements Initializable {
 			stage.setMaximized(true);
 			stage.showAndWait();
 			this.employOList.clear();
-			loadEmployTable();
+			this.loadEmployTable();
+			this.dealerOList.clear();
+			this.loadDealerTable();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("problem in loading DeletedEmployFXML...."+e.getLocalizedMessage());

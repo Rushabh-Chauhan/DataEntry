@@ -99,6 +99,46 @@ public class DeletedItemsController implements Initializable{
 			return;
 
 	    }
+	  
+	  @FXML
+	    void restoreDealer(ActionEvent event) {
+		  TreeItem<Dealer> selected = this.dealerTreeTable.getSelectionModel().getSelectedItem();
+			if(selected == null)
+			{
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setHeaderText(null);
+				alert.setContentText("Please Select The Dealer To restore");
+				alert.showAndWait();
+				return;
+			}
+
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setHeaderText("Restore Dealer");
+			alert.setContentText("Are you sure do you want to restore "+selected.getValue().companyname);
+			Optional<ButtonType> ans = alert.showAndWait();
+			if(ans.get() == ButtonType.OK)
+			{
+				boolean result = database.deleteDealer(selected.getValue(),"dealeteddealertable");
+				if(result)
+				{
+					// Refreshes the list after the deletion; 
+					this.dealerOList.clear();
+					this.loadDealerTable();
+
+				}
+				else// error when not restoring
+				{
+					Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+					alert1.setHeaderText(null);
+					alert1.setContentText("restoring failed. Try again");
+					alert1.showAndWait();
+					return;
+				}
+			}
+			return;
+
+	    }
+
 	
 	private void loadEmployTable()
 	{
