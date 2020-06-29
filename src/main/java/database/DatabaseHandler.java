@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -330,6 +331,39 @@ public class DatabaseHandler {
 					+ "PRIMARY KEY (`Account_Number`));");
 		}
 	}
+	
+//	public void creatItemsTable()throws Exception
+//	{
+//		String tableName = "itemstable";
+//		stat = con.createStatement();
+//		DatabaseMetaData dbm = con.getMetaData();
+//		ResultSet tables = dbm.getTables(null, null, tableName.toUpperCase(),null);
+//		if(!tables.next())
+//		{
+//			stat.execute("CREATE TABLE `"+ tableName +"`("
+//					+"`Item_Name` varchar(50),"
+//					+"`Dealer_Name` varchar(50),"
+//					+"`Size` varchar(50),"
+//					+"`In_Stock` varchar(50));");
+//		}
+//	}
+	
+	 public static int[] createTables(List<String> tableData) throws SQLException {
+	        Statement statement = con.createStatement();
+	        for (String command : tableData) {
+	            System.out.println(command);
+	            statement.addBatch(command);
+	        }
+	       int[] count = statement.executeBatch();
+	        statement.closeOnCompletion();
+	        con.commit();
+	        return count;
+	    }
+	 
+	 public static void newTables(String sql) throws SQLException {
+		 stat = con.createStatement();
+		 stat.execute(sql);
+	    }
 }
 
 

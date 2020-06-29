@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.input.*?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
@@ -30,7 +31,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#NewEmployData" text="Employ Data" />
                   <MenuItem mnemonicParsing="false" onAction="#newDealerData" text="Dealer Data" />
-                  <MenuItem mnemonicParsing="false" text="Storage Data" />
+                  <MenuItem mnemonicParsing="false" onAction="#newItem" text="Item" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Statistics">
@@ -83,7 +84,15 @@
             </Tab>
             <Tab text="Salary Table">
                <content>
-                  <AnchorPane />
+                  <AnchorPane>
+                     <children>
+                        <AnchorPane>
+                           <children>
+                              <AnchorPane />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
                </content>
             </Tab>
          </tabs>

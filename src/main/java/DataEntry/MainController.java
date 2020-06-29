@@ -362,6 +362,28 @@ public class MainController implements Initializable {
 		return;
 
 	}
+	
+	   @FXML
+	    void newItem(ActionEvent event) {
+		   FXMLLoader loader = new FXMLLoader(getClass().getResource("/dataEntryAdd/NewItemFXML.fxml"));
+			Parent root = null;
+			try {
+				root = loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("error in loading new Item......."+e.getLocalizedMessage());
+			}
+			Stage stage = new Stage();
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			//stage.initStyle(StageStyle.TRANSPARENT);
+			stage.setResizable(false);
+			stage.showAndWait(); 
+		   
+
+	    }
 
 	private void loadEmployTable()
 	{

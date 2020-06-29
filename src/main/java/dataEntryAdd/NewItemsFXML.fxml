@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="906.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dataEntryAdd.NewItemController">
+   <children>
+      <JFXComboBox fx:id="itemType" editable="true" labelFloat="true" layoutX="107.0" layoutY="200.0" prefHeight="39.0" prefWidth="156.0" promptText="Item Type" />
+      <JFXTextField fx:id="itemName" labelFloat="true" layoutX="263.0" layoutY="55.0" prefHeight="57.0" prefWidth="380.0" text="Item Name">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </JFXTextField>
+      <AnchorPane layoutX="18.0" layoutY="311.0" prefHeight="283.0" prefWidth="870.0">
+         <children>
+            <Label layoutX="408.0" layoutY="14.0" prefHeight="40.0" prefWidth="54.0" text="Size" textAlignment="CENTER">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <JFXCheckBox fx:id="ss" checkedColor="#66aaff" layoutX="50.0" layoutY="65.0" text="S" />
+            <JFXCheckBox fx:id="sm" checkedColor="#66aaff" layoutX="133.0" layoutY="65.0" text="M" />
+            <JFXCheckBox fx:id="sl" checkedColor="#66aaff" layoutX="221.0" layoutY="65.0" text="L" />
+            <JFXCheckBox fx:id="sxl" checkedColor="#66aaff" layoutX="300.0" layoutY="65.0" text="XL" />
+            <JFXCheckBox fx:id="sxxl" checkedColor="#66aaff" layoutX="395.0" layoutY="65.0" text="XXL" />
+            <JFXCheckBox fx:id="sxxxl" checkedColor="#66aaff" layoutX="497.0" layoutY="65.0" text="XXXL" />
+            <JFXCheckBox fx:id="s4xl" checkedColor="#66aaff" layoutX="622.0" layoutY="65.0" text="4XL" />
+            <JFXCheckBox fx:id="s5xl" checkedColor="#66aaff" layoutX="739.0" layoutY="65.0" text="5XL" />
+            <Label layoutX="420.0" layoutY="126.0" prefHeight="21.0" prefWidth="54.0" text="OR">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <JFXCheckBox fx:id="s30" layoutX="50.0" layoutY="188.0" text="30" />
+            <JFXCheckBox fx:id="s32" layoutX="132.0" layoutY="188.0" text="32" />
+            <JFXCheckBox fx:id="s34" layoutX="217.0" layoutY="188.0" text="34" />
+            <JFXCheckBox fx:id="s36" layoutX="300.0" layoutY="188.0" text="36" />
+            <JFXCheckBox fx:id="s38" layoutX="399.0" layoutY="188.0" text="38" />
+            <JFXCheckBox fx:id="s40" layoutX="506.0" layoutY="188.0" text="40" />
+            <JFXCheckBox fx:id="s42" layoutX="626.0" layoutY="188.0" text="42" />
+            <JFXCheckBox fx:id="s44" layoutX="743.0" layoutY="188.0" text="44" />
+         </children>
+      </AnchorPane>
+      <Button defaultButton="true" layoutX="398.0" layoutY="594.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="110.0" text="SAVE" />
+      <JFXComboBox fx:id="dealer" labelFloat="true" layoutX="628.0" layoutY="200.0" prefHeight="39.0" prefWidth="156.0" promptText="Dealer" />
+   </children>
+</AnchorPane>
