@@ -21,7 +21,7 @@ public class DatabaseHandler {
 	private static Connection con = null;
 	private static Statement stat= null;
 	private String user = "root";
-	private String password = "Rushabhheena89";
+	private String password = "Mypassword";
 
 	private DatabaseHandler()throws Exception
 	{
